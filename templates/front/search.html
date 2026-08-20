@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+
+  </head>
+  <body>
+    {% from 'front/share/product_card.html' import product_card %}
+    {% include 'front/share/navbar.html' %}
+
+    <header class="page-header">
+      <div class="container">
+        <div class="section-subtitle">Product Search</div>
+        <h1>Search <span>Results</span></h1>
+      </div>
+    </header>
+
+    <main class="search-page">
+      <div class="container">
+        <form action="{{ url_for('search') }}" method="get" class="search-page-form">
+          <input
+            type="search"
+            name="q"
+            value="{{ q or '' }}"
+            placeholder="Search by product, category, or detail"
+            aria-label="Search products"
+          />
+          <button type="submit">Search</button>
+        </form>
+
+        <div class="search-meta">
+          Showing {{ products|length }} products
+        </div>
+
+        <div class="row g-4">
+          {% for item in products %}
+          <div class="col-sm-6 col-lg-3">
+            {{ product_card(item) }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

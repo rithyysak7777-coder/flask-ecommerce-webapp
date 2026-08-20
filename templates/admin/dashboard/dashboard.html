@@ -1,0 +1,177 @@
+{% extends 'admin/master.html' %}     
+<!-- extends   -->
+      {% block content %} 
+      <!-- put this into content master -->
+       <main class="admin-content">
+          <section class="page-heading">
+            <div>
+              <p>Today</p>
+              <h3>Store Performance</h3>
+            </div>
+            <a href="#" class="export-btn">
+              <i class="bi bi-download"></i>
+              Export Report
+            </a>
+          </section>
+
+          <section class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-icon sales">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <div>
+                <span>Total Sales</span>
+                <strong>$24,860</strong>
+                <small class="positive">+12.4% from last week</small>
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon orders">
+                <i class="bi bi-cart-check"></i>
+              </div>
+              <div>
+                <span>Orders</span>
+                <strong>1,284</strong>
+                <small class="positive">+8.2% from last week</small>
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon customers">
+                <i class="bi bi-person-plus"></i>
+              </div>
+              <div>
+                <span>Customers</span>
+                <strong>8,642</strong>
+                <small class="positive">+5.1% from last week</small>
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon stock">
+                <i class="bi bi-exclamation-triangle"></i>
+              </div>
+              <div>
+                <span>Low Stock</span>
+                <strong>17</strong>
+                <small class="warning">Needs attention</small>
+              </div>
+            </article>
+          </section>
+
+          <section class="dashboard-grid">
+            <article class="panel sales-panel">
+              <div class="panel-header">
+                <div>
+                  <span>Revenue</span>
+                  <h4>Monthly Sales</h4>
+                </div>
+                <select aria-label="Sales period">
+                  <option>This Month</option>
+                  <option>Last Month</option>
+                  <option>This Year</option>
+                </select>
+              </div>
+              <div class="chart-bars" aria-label="Monthly sales chart">
+                <span style="height: 42%"></span>
+                <span style="height: 66%"></span>
+                <span style="height: 48%"></span>
+                <span style="height: 80%"></span>
+                <span style="height: 60%"></span>
+                <span style="height: 92%"></span>
+                <span style="height: 73%"></span>
+              </div>
+              <div class="chart-labels">
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+                <span>Sun</span>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <div>
+                  <span>Activity</span>
+                  <h4>Recent Orders</h4>
+                </div>
+                <a href="#">View All</a>
+              </div>
+              <div class="order-list">
+                <div class="order-row">
+                  <div>
+                    <strong>#RC1024</strong>
+                    <span>Classic Denim Jacket</span>
+                  </div>
+                  <p>$129.00</p>
+                  <em class="status paid">Paid</em>
+                </div>
+                <div class="order-row">
+                  <div>
+                    <strong>#RC1023</strong>
+                    <span>Leather Crossbody Bag</span>
+                  </div>
+                  <p>$89.00</p>
+                  <em class="status pending">Pending</em>
+                </div>
+                <div class="order-row">
+                  <div>
+                    <strong>#RC1022</strong>
+                    <span>Premium White Sneakers</span>
+                  </div>
+                  <p>$142.00</p>
+                  <em class="status shipped">Shipped</em>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section class="panel products-panel">
+            <div class="panel-header">
+              <div>
+                <span>Inventory</span>
+                <h4>Top Products</h4>
+              </div>
+              <a href="#">Manage Products</a>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Product">Classic Denim Jacket</td>
+                    <td data-label="Category">Women</td>
+                    <td data-label="Price">$129.00</td>
+                    <td data-label="Stock">64</td>
+                    <td data-label="Status"><span class="status paid">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td data-label="Product">Premium White Sneakers</td>
+                    <td data-label="Category">Men</td>
+                    <td data-label="Price">$142.00</td>
+                    <td data-label="Stock">18</td>
+                    <td data-label="Status"><span class="status warning-status">Low</span></td>
+                  </tr>
+                  <tr>
+                    <td data-label="Product">Leather Crossbody Bag</td>
+                    <td data-label="Category">Accessories</td>
+                    <td data-label="Price">$89.00</td>
+                    <td data-label="Stock">41</td>
+                    <td data-label="Status"><span class="status paid">Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+
+{% endblock %}

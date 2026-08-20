@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    
+    <header class="about-hero">
+      <div class="container">
+        <div class="about-hero-grid">
+          <div class="about-hero-copy">
+            <div class="section-subtitle">About Ractz</div>
+            <h1>Modern style, chosen with care.</h1>
+            <p>
+              Ractz is a clean, curated shopping experience for people who want
+              pieces that feel refined, wearable, and easy to love.
+            </p>
+            <a href="{{ url_for('products') }}" class="btn-gold">
+              Shop Collection
+            </a>
+          </div>
+          <div class="about-hero-image">
+            <img
+              src="{{ url_for('static', filename='image/image.png') }}"
+              alt="Elegant fashion styling"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="about-section">
+        <div class="container">
+          <div class="about-story">
+            <div>
+              <div class="section-subtitle">Our Story</div>
+              <h2>Built for simple, confident shopping.</h2>
+            </div>
+            <p>
+              We select clothing, jewelry, and everyday essentials with a focus
+              on quality, useful design, and timeless details. Every product is
+              presented clearly so customers can find what fits their style
+              without the noise.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="values-section">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="value-card">
+                <i class="bi bi-stars"></i>
+                <h3>Curated Quality</h3>
+                <p>
+                  We keep the collection focused on pieces that look polished
+                  and feel useful beyond one season.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="value-card">
+                <i class="bi bi-bag-check"></i>
+                <h3>Easy Experience</h3>
+                <p>
+                  Clean browsing, clear product details, and direct paths from
+                  discovery to checkout.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="value-card">
+                <i class="bi bi-heart"></i>
+                <h3>Customer First</h3>
+                <p>
+                  We design every page around comfort, trust, and helpful
+                  details that support better choices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-banner">
+        <div class="container">
+          <div class="about-banner-inner">
+            <div>
+              <div class="section-subtitle">Why Shop With Us</div>
+              <h2>Style that feels considered, not complicated.</h2>
+            </div>
+            <a href="{{ url_for('products') }}" class="btn-outline-gold">
+              Explore Now
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

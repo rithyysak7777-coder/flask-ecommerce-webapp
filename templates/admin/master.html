@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Ractz Admin Dashboard</title>
+    {% include 'admin/share/header.html' %} {% block styles %}{% endblock %}
+  </head>
+  <body>
+    <div class="admin-layout">
+      {% include 'admin/share/sidebar.html' %}
+
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <div class="admin-main">
+        {% include 'admin/share/navbar.html' %} {# The place if call #} {% block
+        content %}{% endblock %} {% include 'admin/share/footer.html' %}
+      </div>
+    </div>
+
+    {% include 'admin/share/script.html' %}
+  </body>
+</html>

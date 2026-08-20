@@ -1,0 +1,78 @@
+{% extends 'admin/master.html' %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='user css/confirm_delete.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="admin-content">
+  <section class="page-heading">
+    <div>
+      <p>Users</p>
+      <h3>Confirm Delete</h3>
+    </div>
+  </section>
+
+  <section class="panel confirm-panel">
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <i class="bi bi-exclamation-triangle-fill confirm-icon"></i>
+        <h4 class="confirm-title">Danger Zone</h4>
+        <p class="confirm-text">
+          Are you sure you want to delete this user? This action is permanent and
+          cannot be undone.
+        </p>
+      </div>
+
+      {% if user %}
+      <div class="table-responsive user-delete-table-wrapper">
+        <table class="user-delete-fulltable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>{{ user.id }}</strong></td>
+              <td>
+                <img
+                  src="{{ user.profile }}"
+                  alt="User Avatar"
+                  onerror="this.onerror=null;this.src='{{ url_for('static', filename='image/default.png') }}'"
+                  class="user-delete-avatar"
+                />
+              </td>
+              <td><strong>{{ user.username or user.name }}</strong></td>
+              <td>{{ user.email }}</td>
+              <td><span class="role-badge">{{ user.role }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+      <form action="{{ url_for('delete_user') }}" method="POST" class="confirm-delete-form">
+        {% if user %}
+        <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}" />
+        <input type="hidden" name="id" id="id" value="{{ user.id }}" />
+        {% endif %}
+
+        <div class="confirm-actions">
+          <button
+            type="submit"
+            class="btn btn-danger confirm-delete-btn"
+            >Danger Delete</button
+          >
+          <a href="{{ url_for('user') }}" class="btn btn-outline-secondary"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+{% endblock %}

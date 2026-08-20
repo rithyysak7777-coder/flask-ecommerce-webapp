@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+{#    {% from 'front/share/product_card.html' import product_card %}#}
+     
+    {% include 'front/share/navbar.html' %}
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-tag">New Collection 2026</div>
+          <h1>Dress for the <span>Extraordinary</span></h1>
+          <p class="hero-desc">
+            Discover curated luxury pieces crafted from the finest materials,
+            where every detail is an expression of timeless sophistication.
+            Please enjoy Ractz Store.
+          </p>
+
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="{{ url_for('products') }}" class="btn-gold">Shop Now</a>
+            <a href="{{ url_for('about') }}" class="btn-outline-gold">About Ractz</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">12K+</div>
+              <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">98%</div>
+              <div class="stat-label">Satisfaction</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image-panel slide-in-image">
+          <div class="hero-badge">
+            <div class="price-label">Starting From</div>
+            <div class="price-tag">$89.00</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-strip">
+      <div class="container">
+        <div class="row justify-content-center g-4">
+          <div class="col-auto">
+            <a href="{{ url_for('products') }}" class="category-card">
+              <div class="cat-icon"><i class="bi bi-bag-heart"></i></div>
+              <div class="cat-name">Women</div>
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="{{ url_for('products') }}" class="category-card">
+              <div class="cat-icon"><i class="bi bi-person-standing"></i></div>
+              <div class="cat-name">Men</div>
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="{{ url_for('products') }}" class="category-card">
+              <div class="cat-icon"><i class="bi bi-gem"></i></div>
+              <div class="cat-name">Jewelry</div>
+            </a>
+          </div>
+          <div class="col-auto">
+            <a href="{{ url_for('products') }}" class="category-card">
+              <div class="cat-icon"><i class="bi bi-stars"></i></div>
+              <div class="cat-name">All</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="products-section" id="products">
+        <div class="container">
+          <div class="row mb-5 align-items-end">
+            <div class="col">
+              <div class="section-subtitle">Handpicked For You</div>
+              <h2 class="section-title">Featured <em>Collections</em></h2>
+              <div class="section-divider"></div>
+            </div>
+            <div class="col-auto">
+              <a href="{{ url_for('products') }}" class="btn-outline-gold">
+                View All
+              </a>
+            </div>
+          </div>
+
+          <div class="row g-4">
+            {% for product in products %}
+            <div class="col-sm-6 col-lg-3">
+              <div class="product-card">
+                <div class="product-img-wrapper">
+                  <img src="{{ product.image }}" alt="{{ product.title }}" />
+                  <button class="wishlist-btn" type="button" aria-label="Add to wishlist">
+                    <i class="bi bi-heart"></i>
+                  </button>
+                  <div class="product-overlay">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="add-to-cart-btn">
+                      Quick View
+                    </a>
+                  </div>
+                </div>
+                <div class="product-info">
+                  <div class="product-category">{{ product.category }}</div>
+                  <div class="product-name">{{ product.title }}</div>
+                  <div class="product-price">
+                    <span class="price-current">${{ "%.2f"|format(product.price) }}</span>
+                  </div>
+                </div>
+                <a href="{{ url_for('cart', product_id=product.id) }}" class="add-to-cart-btn">
+                  Add To Cart
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="promo-banner">
+        <div class="container">
+          <div class="row align-items-center promo-content">
+            <div class="col-lg-4">
+              <div class="promo-percent">30%</div>
+            </div>
+            <div class="col-lg-8 promo-text">
+              <h2>Seasonal Sale, Don't Miss Out</h2>
+              <p>
+                Elevate your wardrobe with limited-time offers on premium
+                collections curated for customers who love polished detail.
+              </p>
+              <div class="d-flex gap-3 flex-wrap">
+                <a href="{{ url_for('products') }}" class="btn-gold">
+                  Shop the Sale
+                </a>
+                <span class="promo-note">Ends in 3 days</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-strip">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-sm-6 col-lg-3">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-truck"></i></div>
+                <div>
+                  <div class="feature-title">Free Shipping</div>
+                  <div class="feature-desc">
+                    Complimentary worldwide shipping on all orders above $150.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-arrow-repeat"></i></div>
+                <div>
+                  <div class="feature-title">Easy Returns</div>
+                  <div class="feature-desc">
+                    Hassle-free 30-day return policy, no questions asked.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                  <div class="feature-title">Secure Payment</div>
+                  <div class="feature-desc">
+                    Your payment information is always safe and encrypted.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-headset"></i></div>
+                <div>
+                  <div class="feature-title">24/7 Support</div>
+                  <div class="feature-desc">
+                    Our luxury concierge team is always here to assist you.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="newsletter-section">
+        <div class="container">
+          <div class="section-subtitle">Stay in the Loop</div>
+          <h2>Join the Ractz Circle</h2>
+          <p>
+            Be the first to discover new arrivals, exclusive offers, and style
+            inspiration.<br />No spam, just pure luxury in your inbox.
+          </p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email address" aria-label="Email address" />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

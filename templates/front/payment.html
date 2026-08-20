@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  {% include 'front/share/header.html' %}
+
+</head>
+
+<body>
+  {% include 'front/share/navbar.html' %}
+
+  <header class="payment-header">
+    <div class="container">
+      <div class="section-subtitle">Final Step</div>
+      <h1>Secure <span>Payment</span></h1>
+    </div>
+  </header>
+
+  <main class="payment-page">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-lg-7">
+          <section class="payment-panel">
+            <div class="payment-panel-heading">
+              <div>
+                <h2>Payment Method</h2>
+                <p>Choose your preferred payment option.</p>
+              </div>
+              <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div class="payment-options">
+              <label class="payment-option active" for="card">
+                <input type="radio" name="payment" id="card" checked />
+                <span><i class="bi bi-credit-card"></i> Credit Card</span>
+              </label>
+              <label class="payment-option" for="paypal">
+                <input type="radio" name="payment" id="paypal" />
+                <span><i class="bi bi-paypal"></i> PayPal</span>
+              </label>
+              <label class="payment-option" for="cash">
+                <input type="radio" name="payment" id="cash" />
+                <span><i class="bi bi-cash-stack"></i> Cash Delivery</span>
+              </label>
+            </div>
+
+            <form class="payment-form">
+              <div class="mb-3">
+                <label for="card-name">Name on Card</label>
+                <input id="card-name" type="text" class="form-control" placeholder="Sopheak Dara" />
+              </div>
+              <div class="mb-3">
+                <label for="card-number">Card Number</label>
+                <input id="card-number" type="text" class="form-control" placeholder="1234 5678 9012 3456" />
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="expiry">Expiry Date</label>
+                  <input id="expiry" type="text" class="form-control" placeholder="MM / YY" />
+                </div>
+                <div class="col-md-6">
+                  <label for="cvv">CVV</label>
+                  <input id="cvv" type="text" class="form-control" placeholder="123" />
+                </div>
+              </div>
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" id="save" />
+                <label class="form-check-label" for="save">
+                  Save this card for faster checkout next time
+                </label>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="col-lg-5">
+          <aside class="payment-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-product">
+              <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png" alt="Fjallraven backpack" />
+              <div>
+                <h3>Foldsack No. 1 Backpack</h3>
+                <p>Qty 1</p>
+              </div>
+              <strong>$109.95</strong>
+            </div>
+
+            <div class="summary-line">
+              <span>Subtotal</span>
+              <span>$109.95</span>
+            </div>
+            <div class="summary-line">
+              <span>Shipping</span>
+              <span class="free">Free</span>
+            </div>
+            <div class="summary-line">
+              <span>Tax</span>
+              <span>$0.00</span>
+            </div>
+            <div class="summary-total">
+              <span>Total</span>
+              <strong>$109.95</strong>
+            </div>
+
+            <form action="{{ url_for('complete_order') }}" method="post">
+              <button class="pay-now-btn" type="submit">Pay Now</button>
+            </form>
+            <a href="{{ url_for('checkout') }}" class="back-link">
+              <i class="bi bi-arrow-left"></i> Back to checkout
+            </a>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include 'front/share/footer.html' %}
+</body>
+
+</html>

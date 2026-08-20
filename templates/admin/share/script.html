@@ -1,0 +1,52 @@
+<script>
+  const sidebar = document.getElementById("adminSidebar");
+  const toggle = document.getElementById("sidebarToggle");
+  const backdrop = document.getElementById("sidebarBackdrop");
+
+  function closeSidebar() {
+    sidebar.classList.remove("is-open");
+    backdrop.classList.remove("is-visible");
+  }
+
+  toggle.addEventListener("click", function () {
+    sidebar.classList.toggle("is-open");
+    backdrop.classList.toggle("is-visible");
+  });
+
+  backdrop.addEventListener("click", closeSidebar);
+
+  const modal = document.getElementById("deleteModal");
+  const modalText = document.getElementById("deleteModalText");
+  const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+  let deleteTarget = null;
+
+  document.querySelectorAll(".delete-user-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      deleteTarget = button.getAttribute("data-user");
+      modalText.textContent = `Are you sure you want to delete ${deleteTarget}?`;
+      modal.style.display = "flex";
+    });
+  });
+
+  cancelDeleteBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    deleteTarget = null;
+  });
+
+  confirmDeleteBtn.addEventListener("click", () => {
+    if (deleteTarget) {
+      alert(`${deleteTarget} deleted`);
+    }
+    modal.style.display = "none";
+    deleteTarget = null;
+  });
+
+  function loadFile(event) {
+    var output = document.getElementById("output");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function () {
+      URL.revokeObjectURL(output.src);
+    };
+  }
+</script>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+
+  </head>
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    <header class="contact-hero">
+      <div class="container">
+        <div class="section-subtitle">Customer Care</div>
+        <h1>Contact <span>Ractz</span></h1>
+        <p>Questions about orders, payment, delivery, or your account? Send us a note and we will help you clearly.</p>
+      </div>
+    </header>
+
+    <main class="contact-page">
+      <div class="container">
+        <section class="contact-grid">
+          <div class="contact-panel contact-copy">
+            <div class="section-subtitle">Support Desk</div>
+            <h2>We are here for your shopping questions.</h2>
+            <p>
+              Tell us what happened, include your order details if you have them,
+              and the Ractz team will guide you through the next step.
+            </p>
+
+            <div class="contact-methods">
+              <div class="contact-method">
+                <i class="bi bi-envelope"></i>
+                <div>
+                  <strong>Email</strong>
+                  <span>support@ractz.local</span>
+                </div>
+              </div>
+              <div class="contact-method">
+                <i class="bi bi-clock"></i>
+                <div>
+                  <strong>Hours</strong>
+                  <span>Monday to Saturday, 9 AM - 6 PM</span>
+                </div>
+              </div>
+              <div class="contact-method">
+                <i class="bi bi-shield-check"></i>
+                <div>
+                  <strong>Secure Help</strong>
+                  <span>Payment and account questions stay private.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="contact-panel">
+            <div class="account-card-heading contact-heading">
+              <div>
+                <h2>Send Message</h2>
+                <p>Use the form below and we will reply soon.</p>
+              </div>
+              <i class="bi bi-chat-dots"></i>
+            </div>
+            <form class="account-form">
+              <div class="mb-4">
+                <label for="contact-name">Name</label>
+                <input id="contact-name" class="form-control w-100" type="text" placeholder="Your name" />
+              </div>
+              <div class="mb-4">
+                <label for="contact-email">Email</label>
+                <input id="contact-email" class="form-control w-100" type="email" placeholder="Your email" />
+              </div>
+              <div class="mb-4">
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" class="form-control w-100" rows="5" placeholder="How can we help?"></textarea>
+              </div>
+              <button class="account-btn" type="button">Send</button>
+            </form>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

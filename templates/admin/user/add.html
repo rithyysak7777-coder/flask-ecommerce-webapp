@@ -1,0 +1,96 @@
+{% extends 'admin/master.html' %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='user css/add.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="admin-content">
+  <section class="page-heading">
+    <div>
+      <p>Customers</p>
+      <h3>Add New User</h3>
+    </div>
+    <a href="{{ url_for('user') }}" class="export-btn back-btn">
+      <i class="bi bi-arrow-left"></i>
+      Back to Users
+    </a>
+  </section>
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }} user-alert">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <span>Account</span>
+        <h4>Create a new customer account</h4>
+      </div>
+    </div>
+
+    <form action="{{ url_for('do_add_user') }}" method="POST" class="user-form">
+      <div class="user-form-group">
+        <label for="name" class="user-form-label">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="user-form-input"
+        />
+      </div>
+
+      <div class="user-form-group">
+        <label for="email" class="user-form-label">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="user-form-input"
+        />
+      </div>
+      <div class="user-form-group">
+        <label for="role" class="user-form-label">Role</label>
+        <select id="role" name="role" class="user-form-input">
+          <option value="User">User</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="user-form-group">
+        <label for="password" class="user-form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          class="user-form-input"
+        />
+      </div>
+
+      <div class="user-form-group">
+        <label for="confirm_password" class="user-form-label"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          required
+          class="user-form-input"
+        />
+      </div>
+
+      <div class="user-form-actions">
+        <button type="submit" class="export-btn user-submit-btn">
+          <i class="bi bi-person-plus"></i>
+          Create User
+        </button>
+        <a href="{{ url_for('user') }}" class="user-cancel-btn">Cancel</a>
+      </div>
+    </form>
+  </section>
+</main>
+{% endblock %}

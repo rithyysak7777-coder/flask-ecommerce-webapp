@@ -1,0 +1,39 @@
+
+{% macro product_card(item, show_rating=False, badge=None) %}
+<div class="product-card">
+  <div class="product-img-wrapper">
+    <img src="{{ item.image }}" alt="{{ item.title }}" />
+    {% if badge %}
+    <span class="product-badge {{ 'badge-sale' if badge == 'Sale' else 'badge-new' }}">{{ badge }}</span>
+    {% endif %}
+    <button class="wishlist-btn" aria-label="Add to wishlist">
+      <i class="bi bi-heart"></i>
+    </button>
+    <div class="product-overlay">
+      <a href="{{ url_for('product_detail', product_id=item.id) }}" class="add-to-cart-btn">
+        Quick View
+      </a>
+    </div>
+  </div>
+  <div class="product-info">
+    <div class="product-category">{{ item.category }}</div>
+    <div class="product-name">{{ item.title }}</div>
+    {% if show_rating and item.rating %}
+    <div class="product-rating">
+      {% set full_stars = item.rating.rate | round(0, 'floor') | int %}
+      {% set has_half_star = (item.rating.rate - full_stars) >= 0.5 %}
+      {% for _ in range(full_stars) %}<i class="bi bi-star-fill"></i>{% endfor %}
+      {% if has_half_star %}<i class="bi bi-star-half"></i>{% endif %}
+      {% for _ in range(5 - full_stars - (1 if has_half_star else 0)) %}<i class="bi bi-star"></i>{% endfor %}
+      <span>({{ item.rating.count }})</span>
+    </div>
+    {% endif %}
+    <div class="product-price">
+      <span class="price-current">${{ "%.2f"|format(item.price) }}</span>
+    </div>
+  </div>
+  <a href="{{ url_for('cart', product_id=item.id) }}" class="add-to-cart-btn">
+    Add to Cart
+  </a>
+</div>
+{% endmacro %}

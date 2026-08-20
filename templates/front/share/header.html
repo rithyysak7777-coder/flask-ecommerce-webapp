@@ -1,0 +1,78 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ractz</title>
+<script>
+  (function () {
+    const savedTheme = localStorage.getItem("ractz-theme");
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+
+    document.documentElement.dataset.theme = savedTheme || preferredTheme;
+  })();
+</script>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/bootstrap/bootstrap.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/bootstrap/bootstrapfonts.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/bootstrap/bootstrapIcon.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/style.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/about.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/account.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/cart.css') }}"
+/>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/checkout.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/account.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/payment.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/products.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/account.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/products.css') }}"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='style/search.css') }}"
+/>
+<script
+  src="{{ url_for('static', filename='script/theme.js') }}"
+  defer
+></script>

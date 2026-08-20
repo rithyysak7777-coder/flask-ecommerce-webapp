@@ -1,0 +1,116 @@
+.panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin: 1.5rem auto;
+  padding: 2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.confirm-panel {
+  max-width: none;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.confirm-card {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.confirm-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.confirm-icon {
+  font-size: 3rem;
+  color: #dc3545;
+}
+
+.confirm-title {
+  margin: 1rem 0 0.5rem;
+  color: #dc3545;
+}
+
+.confirm-text {
+  margin-bottom: 1.25rem;
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.confirm-delete-btn {
+  min-width: 120px;
+  font-weight: 700;
+}
+
+.user-delete-table-wrapper {
+  width: 100%;
+  margin: 1.5rem 0 2rem;
+  overflow-x: auto;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.user-delete-fulltable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.user-delete-fulltable thead tr {
+  background: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.user-delete-fulltable th {
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+}
+
+.user-delete-fulltable td {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  color: #212529;
+  vertical-align: middle;
+  border-bottom: none;
+}
+
+.user-delete-avatar {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+
+

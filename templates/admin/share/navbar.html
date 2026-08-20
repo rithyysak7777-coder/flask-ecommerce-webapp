@@ -1,0 +1,30 @@
+ <nav class="admin-navbar">
+          <button
+            class="sidebar-toggle"
+            type="button"
+            id="sidebarToggle"
+            aria-label="Open sidebar"
+          >
+            <i class="bi bi-list"></i>
+          </button>
+
+          <div class="navbar-title">
+            <span>Welcome back</span>
+            <h2>Dashboard Overview</h2>
+          </div>
+
+          <form class="admin-search" action="#" role="search">
+            <i class="bi bi-search"></i>
+            <input type="search" placeholder="Search orders, products..." />
+          </form>
+
+          <div class="navbar-actions">
+            <button type="button" aria-label="Notifications">
+              <i class="bi bi-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <a href="{{ url_for('home') }}" aria-label="Visit store">
+              <i class="bi bi-shop"></i>
+            </a>
+          </div>
+        </nav>

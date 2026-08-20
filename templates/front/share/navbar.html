@@ -1,0 +1,54 @@
+<div class="announcement-bar">
+  Free Shipping on Orders Over $150 &nbsp;|&nbsp; Use Code:
+  <strong>Ractz</strong> for 20% Off
+</div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <button class="theme-toggle theme-toggle-text" type="button" aria-label="Change color theme" data-theme-toggle>
+        <span class="theme-label-light">Dark</span>
+        <span class="theme-label-dark">Light</span>
+      </button>
+
+      <div class="brand-group">
+        <a href="{{ url_for('home') }}" class="navbar-brand">Ractz</a>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint == 'home' else '' }}">Home</a></li>
+        <li><a href="{{ url_for('products') }}">Collections</a></li>
+        <li><a href="{{ url_for('sale') }}" class="{{ 'active' if request.endpoint == 'sale' else '' }}">Sale</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' else '' }}">Contact</a></li>
+      </ul>
+
+      <div class="nav-icons">
+        <form action="{{ url_for('search') }}" method="get" class="nav-search-form">
+          <input type="search" name="q" value="{{ query|default('') }}" placeholder="Search"
+            aria-label="Search products" />
+          <button type="submit" aria-label="Search">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+
+
+        <a href="{{ url_for('account') }}" class="account-link" aria-label="My account">
+          <i class="bi bi-person"></i>
+        </a>
+        <a href="{{ url_for('cart') }}" class="cart-link" aria-label="Shopping bag">
+          <i class="bi bi-cart"></i>
+          <span class="cart-badge"></span>
+        </a>
+        <!-- Login / Register options -->
+        {% if session.get('user') %}
+          <span class="nav-user-greeting">Hi, {{ session.get('user').name.split(' ')[0] }}</span>
+          <a href="{{ url_for('logout') }}" class="nav-auth-btn nav-logout-btn">Logout</a>
+        {% else %}
+          <a href="{{ url_for('account', auth='1') }}" class="nav-auth-btn nav-login-btn">Login</a>
+          <a href="{{ url_for('account', auth='1') }}" class="nav-auth-btn nav-register-btn">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>

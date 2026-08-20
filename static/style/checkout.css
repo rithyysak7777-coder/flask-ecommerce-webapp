@@ -1,0 +1,138 @@
+.checkout-container {
+  padding-top: 4rem;
+}
+
+.checkout-container h1 {
+  color: var(--navy);
+  font-size: clamp(2.7rem, 5vw, 4.5rem);
+  font-weight: 500;
+}
+
+.checkout-container h1 span {
+  color: var(--blue);
+  font-style: italic;
+}
+
+.form-control {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--navy);
+  padding: 0.85rem 1rem;
+}
+
+.form-control:focus {
+  border-color: rgba(37, 99, 235, 0.55);
+  background: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.1);
+}
+
+.checkout-section {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+}
+
+.checkout-section h2 {
+  color: var(--navy);
+  font-family: "DM Sans", "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+}
+
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 1rem;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.checkout-payment-option {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #fff;
+  margin-bottom: 0.85rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.checkout-payment-option:hover,
+.checkout-payment-option:focus-within {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: var(--sky);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.1);
+  transform: translateY(-3px);
+}
+
+.checkout-payment-option span {
+  color: var(--navy);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.checkout-payment-option i {
+  color: var(--blue);
+  margin-right: 0.35rem;
+}
+
+.form-check-input {
+  accent-color: var(--blue);
+}
+
+.order-summary {
+  position: sticky;
+  top: 110px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  padding: 2rem;
+}
+
+.checkout-summary-img {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--ice);
+  object-fit: contain;
+  padding: 5px;
+}
+
+.btn-pay {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.btn-pay:hover {
+  background: var(--blue-dark);
+  color: #fff;
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.22);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 992px) {
+  .order-summary {
+    position: static;
+  }
+}

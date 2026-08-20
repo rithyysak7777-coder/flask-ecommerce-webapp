@@ -1,0 +1,27 @@
+{
+  "john@example.com": {
+    "name": "John Doe",
+    "password": "password123"
+  },
+  "testbuyer@example.com": {
+    "name": "Test Buyer",
+    "password": "pass",
+    "orders": [
+      {
+        "order_id": "RZ-20260602003530",
+        "date": "June 02, 2026",
+        "status": "Paid",
+        "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+        "category": "men's clothing",
+        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
+        "quantity": 1,
+        "total": 109.95
+      }
+    ]
+  },
+  "ractz-check@gmail.com": {
+    "name": "Ractz",
+    "password": "pass",
+    "orders": []
+  }
+}

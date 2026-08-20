@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    <header class="page-header">
+      <div class="container">
+        <div class="section-subtitle">Style Notes</div>
+        <h1>Ractz <span>Blog</span></h1>
+      </div>
+    </header>
+
+    <main class="products-section">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <article class="feature-item">
+              <div class="feature-icon"><i class="bi bi-stars"></i></div>
+              <div>
+                <div class="feature-title">New Season Picks</div>
+                <div class="feature-desc">Fresh pieces selected for everyday polish and simple styling.</div>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="feature-item">
+              <div class="feature-icon"><i class="bi bi-gem"></i></div>
+              <div>
+                <div class="feature-title">Jewelry Guide</div>
+                <div class="feature-desc">Small details that make outfits feel finished without overthinking.</div>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-4">
+            <article class="feature-item">
+              <div class="feature-icon"><i class="bi bi-bag-heart"></i></div>
+              <div>
+                <div class="feature-title">Wardrobe Care</div>
+                <div class="feature-desc">Simple habits to keep favorite items looking clean and lasting longer.</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

@@ -1,0 +1,46 @@
+      <aside class="admin-sidebar" id="adminSidebar">
+<div class="sidebar-brand">
+          <span class="brand-mark">R</span>
+          <div>
+            <h1>Ractz</h1>
+            <p>Admin Panel</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-menu" aria-label="Admin navigation">
+          <a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+          </a>
+         <a href="{{ url_for('user') }}" class="{% if request.endpoint == 'user' %}active{% endif %}">
+            <i class="bi bi-people"></i>
+            <span>User</span>
+          </a>
+
+          <a href="#">
+            <i class="bi bi-bag-check"></i>
+            <span>Orders</span>
+          </a>
+          <a href="#">
+            <i class="bi bi-box-seam"></i>
+            <span>Products</span>
+          </a>
+          <a href="#">
+            <i class="bi bi-bar-chart"></i>
+            <span>Reports</span>
+          </a>
+          <a href="#">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-profile">
+          <div class="profile-avatar">AD</div>
+          <div>
+            <strong>Admin User</strong>
+            <span>Store Manager</span>
+          </div>
+        </div>
+
+      </aside>

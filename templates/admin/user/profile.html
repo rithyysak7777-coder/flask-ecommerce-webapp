@@ -1,0 +1,89 @@
+{% extends 'admin/master.html' %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='user css/profile.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="admin-content">
+  <section class="page-heading">
+    <div>
+      <p>Customers</p>
+      <h3>User Profile</h3>
+    </div>
+    <a href="{{ url_for('user') }}" class="export-btn back-btn">
+      <i class="bi bi-arrow-left"></i>
+      Back to Users
+    </a>
+  </section>
+
+  <section class="panel profile-panel">
+    <div class="profile-card">
+      <div class="profile-main">
+        <div class="profile-avatar-card">
+          <img
+            src="{{ url_for('static', filename='image/profile.png') }}"
+            alt="{{ user.name }}"
+            class="profile-avatar"
+          />
+          <div class="profile-header">
+            <h4>{{ user.name }}</h4>
+            <span>{{ user.role }}</span>
+            <p>{{ user.email }}</p>
+          </div>
+        </div>
+
+        <div class="profile-badges">
+          <span class="badge status-badge">{{ user.status }}</span>
+          <span class="badge joined-badge">Joined {{ user.joined }}</span>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-details-box">
+          <h5>Contact Details</h5>
+          <div class="detail-row">
+            <span>Phone</span>
+            <strong>{{ user.phone }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Location</span>
+            <strong>{{ user.location }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>User ID</span>
+            <strong>{{ user.id }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Email</span>
+            <strong>{{ user.email }}</strong>
+          </div>
+        </div>
+
+        <div class="activity-box">
+          <h5>Account Summary</h5>
+          <div class="summary-row">
+            <span>Total Orders</span>
+            <strong>{{ user.total_orders }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Total Spent</span>
+            <strong>{{ user.total_spent }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Last Order</span>
+            <strong>{{ user.last_order.id }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Last Order Date</span>
+            <strong>{{ user.last_order.date }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Last Status</span>
+            <strong>{{ user.last_order.status }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

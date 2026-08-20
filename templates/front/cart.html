@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  {% include 'front/share/header.html' %}
+</head>
+
+<body>
+  {% include 'front/share/navbar.html' %}
+
+  {% set ns = namespace(subtotal=0, item_count=0) %}
+  {% for item in cart_list %}
+  {% set qty = item.qty|default(item.quantity|default(1))|int %}
+  {% set price = item.price|default(0)|float %}
+  {% set ns.subtotal = ns.subtotal + (price * qty) %}
+  {% set ns.item_count = ns.item_count + qty %}
+  {% endfor %}
+  {% set shipping = 0 if ns.subtotal >= 150 or ns.subtotal == 0 else 12 %}
+  {% set estimated_tax = ns.subtotal * 0.07 %}
+  {% set total = ns.subtotal + shipping + estimated_tax %}
+
+  <main class="cart-page">
+    <div class="container">
+      <header class="cart-hero">
+        <div>
+          <div class="section-subtitle">Shopping Bag</div>
+          <h1>Your <span>Cart</span></h1>
+        </div>
+        <a href="{{ url_for('products') }}" class="cart-continue-top">
+          <i class="bi bi-arrow-left"></i>
+          Continue shopping
+        </a>
+      </header>
+
+      {% if cart_list %}
+      <div class="cart-layout">
+        <section class="cart-main-panel">
+          <div class="cart-panel-header">
+            <div>
+              <div class="cart-eyebrow">Items</div>
+              <h2>{{ ns.item_count }} products in cart</h2>
+            </div>
+            <div class="cart-mini-note">
+              <i class="bi bi-bag-check"></i>
+              Reserved for today
+            </div>
+          </div>
+
+          <div class="cart-item-list">
+            {% for item in cart_list %}
+            {% set qty = item.qty|default(item.quantity|default(1))|int %}
+            {% set price = item.price|default(0)|float %}
+            <article class="cart-item" data-cart-item="{{ item.id }}">
+              <a href="{{ url_for('product_detail', product_id=item.id) }}" class="cart-item-image">
+                {% if item.image is defined %}
+                <img src="{{ item.image }}" alt="{{ item.title|default('Product') }}" />
+                {% else %}
+                <div class="cart-image-placeholder">
+                  <i class="bi bi-box-seam"></i>
+                </div>
+                {% endif %}
+              </a>
+
+              <div class="cart-item-info">
+                <div class="cart-item-category">
+                  {{ item.category|default('Selected product') }}
+                </div>
+                <h3>{{ item.title|default('Product #' ~ item.id) }}</h3>
+                <p>
+                  {{ item.description|default('Product details will appear here when the cart is opened from your saved
+                  cart data.') }}
+                </p>
+                <div class="cart-item-actions">
+                  <div class="quantity-control" aria-label="Quantity">
+                    <a href="{{ url_for('cart', product_id=item.id, action='minus') }}"
+                      class="cart-action {{ 'is-disabled' if qty <= 1 else '' }}" data-cart-action="minus"
+                      data-product-id="{{ item.id }}" aria-label="Decrease quantity">
+                      <i class="bi bi-dash"></i>
+                    </a>
+                    <span data-cart-qty>{{ qty }}</span>
+                    <a href="{{ url_for('cart', product_id=item.id, action='add') }}" class="cart-action"
+                      data-cart-action="add" data-product-id="{{ item.id }}" aria-label="Increase quantity">
+                      <i class="bi bi-plus"></i>
+                    </a>
+                  </div>
+                  <a href="{{ url_for('cart', product_id=item.id, action='remove') }}"
+                    class="cart-remove-btn cart-action" data-cart-action="remove" data-product-id="{{ item.id }}">
+                    Remove
+                  </a>
+                </div>
+              </div>
+
+              <div class="cart-item-price">
+                <span>Item price</span>
+                {% if price > 0 %}
+                <strong>${{ "%.2f"|format(price) }}</strong>
+                <small>${{ "%.2f"|format(price * qty) }} total</small>
+                {% else %}
+                <strong>Saved</strong>
+                <small>Qty {{ qty }}</small>
+                {% endif %}
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <aside class="summary-card">
+          <div class="cart-eyebrow">Summary</div>
+          <h2>Order total</h2>
+
+          <div class="summary-lines">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <strong>${{ "%.2f"|format(ns.subtotal) }}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <strong>{% if shipping == 0 %}Free{% else %}${{ "%.2f"|format(shipping) }}{% endif %}</strong>
+            </div>
+            <div class="summary-row">
+              <span>Estimated tax</span>
+              <strong>${{ "%.2f"|format(estimated_tax) }}</strong>
+            </div>
+            <div class="summary-row summary-total">
+              <span>Total</span>
+              <strong>${{ "%.2f"|format(total) }}</strong>
+            </div>
+          </div>
+
+          <a href="{{ url_for('checkout') }}" class="btn-checkout">
+            Proceed to checkout
+          </a>
+          <a href="{{ url_for('products') }}" class="btn-add-more">
+            Add more products
+          </a>
+
+          <div class="secure-checkout">
+            <i class="bi bi-shield-lock"></i>
+            <div>
+              <strong>Secure checkout</strong>
+              <span>Payment and order review happen on the next step.</span>
+            </div>
+          </div>
+        </aside>
+
+        <section class="delivery-card">
+          <div class="cart-eyebrow">Delivery</div>
+          <h3>{% if shipping == 0 %}Free shipping unlocked{% else %}Almost free shipping{% endif %}</h3>
+          <p>
+            {% if shipping == 0 %}
+            Your order qualifies for free standard delivery because the total is over $150.
+            {% else %}
+            Add more products to reach $150 and unlock free standard delivery.
+            {% endif %}
+          </p>
+        </section>
+      </div>
+      {% else %}
+      <section class="empty-cart">
+        <i class="bi bi-bag-heart"></i>
+        <h2>Your cart is waiting</h2>
+        <p>Choose a product from the collection and it will appear here with quantity and checkout total.</p>
+        <a href="{{ url_for('products') }}" class="btn-gold">Start shopping</a>
+      </section>
+      {% endif %}
+    </div>
+  </main>
+
+  {% include 'front/share/footer.html' %}
+</body>
+
+</html>

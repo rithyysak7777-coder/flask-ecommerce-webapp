@@ -1,0 +1,100 @@
+.page-header {
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(37, 99, 235, 0.14), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f6fbff 100%);
+  color: var(--navy);
+  padding: 4.5rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: var(--navy);
+  font-size: clamp(3rem, 6vw, 4.8rem);
+  font-weight: 500;
+}
+
+.page-header h1 span {
+  color: var(--blue);
+  font-style: italic;
+}
+
+.filter-bar {
+  position: sticky;
+  top: 76px;
+  z-index: 999;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  margin-bottom: 3rem;
+  padding: 1rem 0;
+}
+
+.filter-label {
+  margin-right: 1rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.category-select-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.filter-bar select {
+  min-width: 210px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--navy);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  outline: none;
+  padding: 0.35rem 0.65rem;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.filter-bar select:hover,
+.filter-bar select:focus {
+  color: var(--blue) !important;
+  background: var(--sky) !important;
+}
+
+@media (max-width: 992px) {
+  .filter-bar {
+    top: 122px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    position: static;
+  }
+
+  .category-select-form {
+    width: 100%;
+  }
+
+  .filter-bar select {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.similar-products-section {
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  padding-top: 4rem;
+}
+
+.product-not-found {
+  min-height: 45vh;
+}

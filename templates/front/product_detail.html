@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+    {% from 'front/share/product_card.html' import product_card %}
+    {% include 'front/share/navbar.html' %}
+
+    <main class="container py-5 mt-4">
+      <a href="{{ url_for('products') }}" class="btn-outline-gold detail-back-link">
+        <i class="bi bi-arrow-left"></i> Back to Shop
+      </a>
+
+      {% if product %}
+      <section class="row g-5 product-detail-section">
+        <div class="col-lg-6">
+          <div class="product-img-wrapper detail-img">
+            <img
+              src="{{ product.image }}"
+              alt="{{ product.title }}"
+              class="img-fluid w-100"
+            />
+          </div>
+        </div>
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <div class="product-category mb-2">{{ product.category }}</div>
+          <h1 class="mb-3">{{ product.title }}</h1>
+          <div class="product-rating mb-4">
+            {% set full_stars = product.rating.rate | round(0, 'floor') | int %}
+            {% set has_half_star = (product.rating.rate - full_stars) >= 0.5 %}
+            {% for _ in range(full_stars) %}<i class="bi bi-star-fill"></i>{% endfor %}
+            {% if has_half_star %}<i class="bi bi-star-half"></i>{% endif %}
+            {% for _ in range(5 - full_stars - (1 if has_half_star else 0)) %}<i class="bi bi-star"></i>{% endfor %}
+            <span class="ms-2">({{ product.rating.count }} Reviews)</span>
+          </div>
+          <div class="price-current detail-price">
+            ${{ "%.2f"|format(product.price) }}
+          </div>
+          <p class="mb-4 text-muted detail-description">
+            {{ product.description }}
+          </p>
+
+          <div class="d-flex gap-3 mt-2 flex-wrap">
+            <a href="{{ url_for('cart', product_id=product.id) }}" class="btn-gold flex-grow-1 text-center py-3">
+              Add to Cart
+            </a>
+            <a href="{{ url_for('checkout') }}" class="btn-outline-gold detail-buy-link">
+              Buy Now
+            </a>
+          </div>
+          <div class="detail-trust-list">
+            <p class="mb-2 text-muted small">
+              <i class="bi bi-truck me-2 text-gold"></i>
+              Free worldwide shipping on orders over $150
+            </p>
+            <p class="mb-0 text-muted small">
+              <i class="bi bi-arrow-repeat me-2 text-gold"></i>
+              30-day return policy
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {% if similar_products %}
+      <section class="similar-products-section">
+        <div class="d-flex justify-content-between align-items-end gap-3 flex-wrap mb-4">
+          <div>
+            <div class="section-subtitle">Similar Products</div>
+            <h2 class="section-title">More in {{ product.category }}</h2>
+          </div>
+          <a href="{{ url_for('products', category=product.category) }}" class="btn-outline-gold">
+            View Category
+          </a>
+        </div>
+        <div class="row g-4">
+          {% for item in similar_products %}
+          <div class="col-sm-6 col-lg-3">
+            {{ product_card(item) }}
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
+      {% else %}
+      <section class="product-not-found text-center py-5">
+        <div class="section-subtitle">Product Not Found</div>
+        <h1 class="mb-3">Product not found</h1>
+        <p class="text-muted mb-4">
+          The product you selected is not available.
+        </p>
+        <a href="{{ url_for('products') }}" class="btn-gold">
+          Back to Shop
+        </a>
+      </section>
+      {% endif %}
+    </main>
+
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="section-subtitle">Stay in the Loop</div>
+        <h2>Join the Ractz Circle</h2>
+        <p>
+          Be the first to discover new arrivals, exclusive offers, and style
+          inspiration.<br />No spam, just pure luxury in your inbox.
+        </p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email address" aria-label="Email address" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </section>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

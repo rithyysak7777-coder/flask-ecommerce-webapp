@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="container checkout-container pb-5">
+      <div class="row g-5">
+        <div class="col-lg-7">
+          <h1 class="mb-5">Secure <span>Checkout</span></h1>
+
+          <form
+            method="POST"
+            action="{{ url_for('do_checkout') }}"
+            id="checkout-form"
+          >
+            <section class="checkout-section">
+              <h2 class="h5 mb-4">
+                <span class="section-num">1</span> Contact Information
+              </h2>
+              <div class="mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  placeholder="Email Address"
+                  aria-label="Email address"
+                  required
+                />
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="newsletter"
+                />
+                <label class="form-check-label small" for="newsletter">
+                  Email me with offers and news
+                </label>
+              </div>
+            </section>
+
+            <section class="checkout-section">
+              <h2 class="h5 mb-4">
+                <span class="section-num">2</span> Shipping Address
+              </h2>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="first_name"
+                    placeholder="First Name"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="last_name"
+                    placeholder="Last Name"
+                    required
+                  />
+                </div>
+                <div class="col-12">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="address"
+                    placeholder="Address"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <input
+                    type="tel"
+                    class="form-control"
+                    name="phone"
+                    placeholder="Phone Number"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section class="checkout-section border-0">
+              <h2 class="h5 mb-4">
+                <span class="section-num">3</span> Payment Method
+              </h2>
+              <label class="checkout-payment-option" for="credit">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="payment"
+                  id="credit"
+                  value="Credit Card"
+                  checked
+                />
+                <span><i class="bi bi-credit-card"></i> Credit Card</span>
+              </label>
+              <label class="checkout-payment-option" for="paypal">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="payment"
+                  id="paypal"
+                  value="PayPal"
+                />
+                <span><i class="bi bi-paypal"></i> PayPal</span>
+              </label>
+            </section>
+          </form>
+        </div>
+
+        <div class="col-lg-5">
+          <aside class="order-summary">
+            <h2 class="h4 mb-4">Order Summary</h2>
+
+            <div id="checkout-items-list" class="mb-4">
+              <div class="text-center py-4 text-muted">
+                <div
+                  class="spinner-border spinner-border-sm text-primary mb-2"
+                  role="status"
+                ></div>
+                <div>Loading order details...</div>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between mb-2 small">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">$0.00</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 small">
+              <span>Shipping</span>
+              <span id="summary-shipping">Free</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2 small">
+              <span>Estimated Tax</span>
+              <span id="summary-tax">$0.00</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mt-3 h5">
+              <span>Total</span>
+              <strong id="summary-total" class="text-primary">$0.00</strong>
+            </div>
+            <button type="submit" form="checkout-form" class="btn-pay mt-4">
+              Continue to Payment
+            </button>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const itemsListContainer = document.getElementById(
+          "checkout-items-list",
+        );
+        const subtotalEl = document.getElementById("summary-subtotal");
+        const shippingEl = document.getElementById("summary-shipping");
+        const taxEl = document.getElementById("summary-tax");
+        const totalEl = document.getElementById("summary-total");
+        const btnPay = document.querySelector(".btn-pay");
+
+        try {
+          const res = await fetch("/cart");
+          if (!res.ok) throw new Error("Failed to fetch cart details");
+
+          const htmlText = await res.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, "text/html");
+
+          const emptyCartEl = doc.querySelector(".empty-cart");
+          const cartItems = doc.querySelectorAll(".cart-item");
+
+          if (emptyCartEl || cartItems.length === 0) {
+            if (itemsListContainer) {
+              itemsListContainer.innerHTML = `
+              <div class="text-center py-4 text-danger">
+                <i class="bi bi-cart-x fs-1 mb-2"></i>
+                <div>Your cart is empty.</div>
+                <a href="/products" class="btn btn-sm btn-outline-primary mt-3">Browse Collections</a>
+              </div>
+            `;
+            }
+            if (btnPay) {
+              btnPay.classList.add("disabled");
+              btnPay.style.pointerEvents = "none";
+              btnPay.style.opacity = "0.5";
+              btnPay.textContent = "Cart is Empty";
+            }
+            if (subtotalEl) subtotalEl.textContent = "$0.00";
+            if (shippingEl) shippingEl.textContent = "Free";
+            if (taxEl) taxEl.textContent = "$0.00";
+            if (totalEl) totalEl.textContent = "$0.00";
+            return;
+          }
+
+          if (itemsListContainer) {
+            itemsListContainer.innerHTML = "";
+          }
+
+          let subtotal = 0;
+
+          cartItems.forEach((itemEl) => {
+            const id = itemEl.getAttribute("data-cart-item");
+            const imgEl = itemEl.querySelector(".cart-item-image img");
+            const imageSrc = imgEl ? imgEl.getAttribute("src") : "";
+            const titleEl = itemEl.querySelector(".cart-item-info h3");
+            const title = titleEl ? titleEl.textContent.trim() : "Product";
+
+            const qtyEl = itemEl.querySelector("[data-cart-qty]");
+            const qty = qtyEl ? parseInt(qtyEl.textContent.trim()) || 1 : 1;
+
+            const priceStrong = itemEl.querySelector(".cart-item-price strong");
+            let itemPrice = 0;
+            if (priceStrong) {
+              itemPrice =
+                parseFloat(priceStrong.textContent.replace("$", "")) || 0;
+            }
+
+            const lineTotal = itemPrice * qty;
+            subtotal += lineTotal;
+
+            const itemDiv = document.createElement("div");
+            itemDiv.className =
+              "d-flex justify-content-between align-items-center mb-3";
+            itemDiv.innerHTML = `
+            <div class="d-flex gap-3 align-items-center" style="max-width: 75%;">
+              <img
+                src="${imageSrc}"
+                width="50"
+                height="50"
+                alt="${title}"
+                class="checkout-summary-img"
+                style="object-fit: contain; border-radius: 10px; border: 1px solid var(--border); padding: 4px; background: var(--ice);"
+              />
+              <div style="min-width: 0; flex: 1;">
+                <div class="small fw-semibold text-truncate" title="${title}">${title}</div>
+                <small class="text-muted">Qty: ${qty} &times; $${itemPrice.toFixed(2)}</small>
+              </div>
+            </div>
+            <span class="small fw-bold">$${lineTotal.toFixed(2)}</span>
+          `;
+            itemsListContainer.appendChild(itemDiv);
+          });
+
+          const shipping = subtotal >= 150 || subtotal === 0 ? 0 : 12;
+          const tax = subtotal * 0.07;
+          const total = subtotal + shipping + tax;
+
+          if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+          if (shippingEl) {
+            shippingEl.textContent =
+              shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`;
+            if (shipping === 0) {
+              shippingEl.className = "text-success fw-bold";
+            } else {
+              shippingEl.className = "";
+            }
+          }
+
+          if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
+          if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+        } catch (error) {
+          console.error("Error loading checkout details:", error);
+          if (itemsListContainer) {
+            itemsListContainer.innerHTML = `
+            <div class="text-center py-4 text-danger">
+              <i class="bi bi-exclamation-triangle fs-2 mb-2"></i>
+              <div>Failed to load order details. Please try again.</div>
+            </div>
+          `;
+          }
+        }
+      });
+    </script>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

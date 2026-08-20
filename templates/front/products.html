@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+
+  </head>
+  <body>
+    {% from 'front/share/product_card.html' import product_card %}
+    {% set is_sale_page = request.endpoint == 'sale' %}
+    {% if is_sale_page %}
+      {% set sale_products = [
+        {
+          'id': 2,
+          'title': 'Mens Casual Premium Slim Fit T-Shirts',
+          'price': 17.50,
+          'description': 'Soft everyday slim-fit shirt selected for the Ractz sale edit.',
+          'category': "men's clothing",
+          'image': 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_t.png',
+          'rating': {'rate': 4.1, 'count': 259}
+        },
+        {
+          'id': 3,
+          'title': 'Mens Cotton Jacket',
+          'price': 44.99,
+          'description': 'A lightweight jacket for cool days, now featured in the seasonal sale.',
+          'category': "men's clothing",
+          'image': 'https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_t.png',
+          'rating': {'rate': 4.7, 'count': 500}
+        },
+        {
+          'id': 8,
+          'title': 'Pierced Owl Rose Gold Plated Stainless Steel Double',
+          'price': 8.49,
+          'description': 'Rose gold plated earrings with a limited sale price.',
+          'category': 'jewelery',
+          'image': 'https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_t.png',
+          'rating': {'rate': 1.9, 'count': 100}
+        },
+        {
+          'id': 10,
+          'title': 'SanDisk SSD PLUS 1TB Internal SSD',
+          'price': 89.00,
+          'description': 'Fast internal SSD storage for the featured tech sale.',
+          'category': 'electronics',
+          'image': 'https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_t.png',
+          'rating': {'rate': 2.9, 'count': 470}
+        },
+        {
+          'id': 16,
+          'title': "Lock and Love Women's Faux Leather Moto Jacket",
+          'price': 24.95,
+          'description': 'A sharp outerwear piece with sale pricing for this week.',
+          'category': "women's clothing",
+          'image': 'https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_t.png',
+          'rating': {'rate': 2.9, 'count': 340}
+        },
+        {
+          'id': 20,
+          'title': 'DANVOUY Womens T Shirt Casual Cotton Short',
+          'price': 9.99,
+          'description': 'Easy cotton tee for warm days and casual layering.',
+          'category': "women's clothing",
+          'image': 'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_t.png',
+          'rating': {'rate': 3.6, 'count': 145}
+        }
+      ] %}
+      {% set display_products = sale_products %}
+    {% else %}
+      {% set display_products = products|default([]) %}
+    {% endif %}
+    {% include 'front/share/navbar.html' %}
+
+    <header class="page-header {{ 'sale-page-header' if is_sale_page else '' }}">
+      <div class="container">
+        <div class="section-subtitle">{{ 'Limited Offers' if is_sale_page else 'Curated Selection' }}</div>
+        <h1>{{ 'Ractz' if is_sale_page else 'The' }} <span>{{ 'Sale Edit' if is_sale_page else 'Full Collection' }}</span></h1>
+        {% if is_sale_page %}
+        <p class="sale-header-copy">Selected pieces with friendlier prices. Add favorites to your cart before the offer ends.</p>
+        {% endif %}
+      </div>
+    </header>
+
+    {% if is_sale_page %}
+    <section class="sale-strip">
+      <div class="container sale-strip-inner">
+        <div>
+        </div>
+        <a href="{{ url_for('products') }}">Shop full collection</a>
+      </div>
+    </section>
+    {% else %}
+    <div class="filter-bar">
+      <div class="container d-flex justify-content-between align-items-center gap-3 flex-wrap">
+        <form class="category-select-form" action="{{ url_for('products') }}" method="get">
+          <label class="filter-label" for="category">Category</label>
+          <select id="category" name="category" onchange="this.form.submit()">
+            <option value="all" {{ 'selected' if active_category|default('all') == 'all' else '' }}>
+              All Products
+            </option>
+          {% for category in categories|default([]) %}
+            <option value="{{ category }}" {{ 'selected' if active_category|default('all') == category else '' }}>
+              {{ category }}
+            </option>
+          {% endfor %}
+          </select>
+        </form>
+        <div class="text-muted small">Showing {{ display_products|length }} products</div>
+      </div>
+    </div>
+    {% endif %}
+
+    <main class="pb-5">
+      <div class="container">
+        <div class="row g-4">
+          {% for item in display_products %}
+          <div class="col-sm-6 col-lg-3">
+            {{ product_card(item, show_rating=is_sale_page, badge='Sale' if is_sale_page else none) }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

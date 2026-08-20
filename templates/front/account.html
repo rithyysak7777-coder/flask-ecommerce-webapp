@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    {% set display_name = user.name|default('Ractz Customer') %}
+    {% set display_email = user.email|default('customer@ractz.local') %}
+    {% set initials = display_name[:1]|upper %}
+
+    <header class="account-dashboard-hero">
+      <div class="container account-dashboard-hero-inner">
+        <div>
+          <div class="section-subtitle">My Account</div>
+          <h1>Your shopping space is ready.</h1>
+          <p>Review your profile, recent orders, and checkout shortcuts from one clean dashboard.</p>
+        </div>
+        <div class="account-hero-profile">
+          <div class="account-avatar">{{ initials }}</div>
+          <div>
+            <strong>{{ display_name }}</strong>
+            <span>{{ display_email }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <div class="container">
+        <div class="account-dashboard">
+          <aside class="account-sidebar">
+            <div class="account-profile">
+              <div class="account-avatar">{{ initials }}</div>
+              <div>
+                <h2>{{ display_name }}</h2>
+                <p>{{ display_email }}</p>
+              </div>
+            </div>
+
+            <nav class="account-menu" aria-label="Account menu">
+              <a href="{{ url_for('account') }}" class="active">
+                <i class="bi bi-grid"></i> Dashboard
+              </a>
+              <a href="{{ url_for('cart') }}">
+                <i class="bi bi-cart"></i> Cart
+              </a>
+              <a href="{{ url_for('checkout') }}">
+                <i class="bi bi-credit-card"></i> Checkout
+              </a>
+              <a href="{{ url_for('logout') }}">
+                <i class="bi bi-box-arrow-right"></i> Logout
+              </a>
+            </nav>
+
+            <div class="account-status-card">
+              <strong>Account status</strong>
+              <span>Signed in and ready for checkout.</span>
+            </div>
+          </aside>
+
+          <section class="account-main">
+            <div class="account-stat-grid">
+              <div class="account-stat-card">
+                <span>Orders</span>
+                <strong>{{ orders|length }}</strong>
+              </div>
+              <div class="account-stat-card">
+                <span>Saved</span>
+                <strong>1</strong>
+              </div>
+              <div class="account-stat-card">
+                <span>Status</span>
+                <strong>OK</strong>
+              </div>
+            </div>
+
+            <section class="account-card">
+              <div class="account-card-heading account-card-heading-row">
+                <div>
+                  <div class="section-subtitle">Orders</div>
+                  <h2>Recent purchases</h2>
+                </div>
+                <a href="{{ url_for('products') }}" class="account-small-btn">Shop again</a>
+              </div>
+
+              <div class="order-history-list">
+                {% if orders %}
+                  {% for order in orders %}
+                  <article class="order-history-item">
+                    <div class="order-history-main">
+                      <div class="order-history-meta">
+                        <span>{{ order.order_id|default('ORDER') }}</span>
+                      </div>
+                      <h3>{{ order.title|default('Ractz order') }}</h3>
+                      <p>{{ order.category|default('Customer order') }} · {{ order.date|default('Today') }}</p>
+                    </div>
+                    <div class="order-history-side">
+                      <strong>${{ "%.2f"|format(order.total|default(0)) }}</strong>
+                      <span>{{ order.status|default('Saved') }}</span>
+                    </div>
+                  </article>
+                  {% endfor %}
+                {% else %}
+                  <article class="order-history-item">
+                    <div class="order-history-main">
+                      <div class="order-history-meta">
+                        <span>No orders yet</span>
+                      </div>
+                      <h3>Your first order will appear here.</h3>
+                      <p>Start shopping and return to this page after checkout.</p>
+                    </div>
+                    <div class="order-history-side">
+                      <a href="{{ url_for('products') }}" class="account-small-btn">Browse</a>
+                    </div>
+                  </article>
+                {% endif %}
+              </div>
+            </section>
+
+            <div class="account-quick-grid">
+              <section class="account-card">
+                <div class="section-subtitle">Checkout</div>
+                <h2>Shopping bag</h2>
+                <p class="account-card-text">Continue with saved cart items and checkout when ready.</p>
+                <a href="{{ url_for('cart') }}" class="account-btn">Open cart</a>
+              </section>
+
+              <section class="account-card">
+                <div class="section-subtitle">Security</div>
+                <h2>Password</h2>
+                <p class="account-card-text">Use reset access if you need to update your password.</p>
+                <a href="{{ url_for('reset_password') }}" class="account-btn account-btn-outline">Reset password</a>
+              </section>
+            </div>
+
+            <section class="account-card profile-details-card">
+              <div class="account-card-heading account-card-heading-row">
+                <div>
+                  <div class="section-subtitle">Profile</div>
+                  <h2>Personal details</h2>
+                </div>
+                <i class="bi bi-person-badge"></i>
+              </div>
+              <div class="profile-details-grid">
+                <div class="profile-detail">
+                  <span>Name</span>
+                  <strong>{{ display_name }}</strong>
+                </div>
+                <div class="profile-detail">
+                  <span>Email</span>
+                  <strong>{{ display_email }}</strong>
+                </div>
+                <div class="profile-detail">
+                  <span>Member type</span>
+                  <strong>Customer</strong>
+                </div>
+                <div class="profile-detail">
+                  <span>Preferred page</span>
+                  <strong>Collections</strong>
+                </div>
+              </div>
+            </section>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="auth-page">
+      <div class="container auth-shell auth-shell-register">
+        <section class="auth-copy">
+          <div class="section-subtitle">Create Account</div>
+          <h1>Join the <span>Ractz</span> collection</h1>
+          <p>Create your customer profile for faster checkout, saved orders, and member shopping access.</p>
+
+          <div class="auth-benefits">
+            <div>
+              <i class="bi bi-lightning-charge"></i>
+              <span>Fast checkout</span>
+            </div>
+            <div>
+              <i class="bi bi-clock-history"></i>
+              <span>Order history</span>
+            </div>
+            <div>
+              <i class="bi bi-gift"></i>
+              <span>Sale updates</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="auth-card">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="auth-alerts">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          <div class="account-card-heading contact-heading">
+            <div>
+              <h2>Register</h2>
+              <p>Fill in your details to create an account.</p>
+            </div>
+            <i class="bi bi-person-plus"></i>
+          </div>
+
+          <form class="account-form auth-form" method="POST" action="{{ url_for('register') }}">
+            <div class="mb-4">
+              <label for="register-name">Name</label>
+              <input id="register-name" name="name" class="form-control w-100" type="text" placeholder="Your full name" required />
+            </div>
+            <div class="mb-4">
+              <label for="register-email">Email</label>
+              <input id="register-email" name="email" class="form-control w-100" type="email" placeholder="Your email" required />
+            </div>
+            <div class="mb-4">
+              <label for="register-password">Password</label>
+              <input id="register-password" name="password" class="form-control w-100" type="password" placeholder="Create password" required />
+            </div>
+
+            <button class="account-btn" type="submit">Create account</button>
+          </form>
+
+          <p class="auth-switch">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Sign in</a>
+          </p>
+        </section>
+      </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

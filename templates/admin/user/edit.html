@@ -1,0 +1,135 @@
+{% extends 'admin/master.html' %} {% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='user css/edit.css') }}"
+/>
+{% endblock %} {% block content %}
+<main class="admin-content">
+  <section class="page-heading">
+    <div>
+      <p>Users</p>
+      <h3>Edit User</h3>
+    </div>
+    <a href="{{ url_for('user') }}" class="export-btn edit-back-btn">
+      <i class="bi bi-arrow-left"></i>
+      Back
+    </a>
+  </section>
+
+  <section class="panel edit-panel">
+    <div class="panel-header">
+      <div>
+        <span>Edit Account</span>
+        <h4>Update user details for ID {{ user_id }}</h4>
+      </div>
+    </div>
+
+    <div class="edit-layout">
+      <div class="edit-card">
+        <div class="edit-card-top">
+          <img
+            id="output"
+            src="{{ user.profile if user and user.profile else url_for('static', filename='image/default.png') }}"
+            alt="User profile image"
+            onerror="this.onerror=null;this.src='{{ url_for('static', filename='image/default.png') }}'"
+            class="edit-card-avatar"
+          />
+          <div class="edit-card-info">
+            <strong>Profile Avatar</strong>
+            <span>
+              Select a profile image for the user and preview it here.
+            </span>
+          </div>
+        </div>
+
+        <div class="edit-card-actions">
+          <label for="profile_image" class="edit-upload-label">
+            <i class="bi bi-upload"></i>
+            Choose File
+          </label>
+          <input
+            type="file"
+            id="profile_image"
+            name="profile_image"
+            accept="image/*"
+            onchange="loadFile(event)"
+            class="edit-file-input"
+          />
+        </div>
+      </div>
+
+      <form action="{{url_for('do_edit_user')}}" method="POST" class="edit-form">
+        <input type="hidden" name="user_id" id="user_id" value="{{ user.id if user else user_id }}" />
+        <input type="hidden" name="id" id="id" value="{{ user.id if user else user_id }}" />
+        <div class="edit-form-box">
+          <div class="edit-form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value="{{ user.username }}"
+              placeholder="Enter name"
+              class="edit-form-control"
+            />
+          </div>
+
+          <div class="edit-form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value="{{ user.email  }}"
+              placeholder="Enter email"
+              class="edit-form-control"
+            />
+          </div>
+
+          <div class="edit-form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Leave blank if you don't want  to change password"
+              class="edit-form-control"
+            />
+          </div>
+
+          <div class="edit-form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" class="edit-form-control">
+              <option value="User" {% if user and (user.role == 'User' or user.role == 'user') %}selected{% endif %}>User</option>
+              <option value="Admin" {% if user and (user.role == 'Admin' or user.role == 'admin') %}selected{% endif %}>Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="edit-actions">
+          <button type="reset" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            Reset
+          </button>
+          <button type="submit" class="export-btn">
+            <i class="bi bi-save"></i>
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<script>
+  function loadFile(event) {
+    var output = document.getElementById('output');
+    if (event.target.files && event.target.files[0]) {
+      output.src = URL.createObjectURL(event.target.files[0]);
+      output.onload = function () {
+        URL.revokeObjectURL(output.src);
+      };
+    }
+  }
+</script>
+{% endblock %}
