@@ -40,9 +40,9 @@
               <td><strong>{{ user.id }}</strong></td>
               <td>
                 <img
-                  src="{{ user.profile }}"
+                  src="{% if user.profile and user.profile.startswith('/') %}{{ user.profile }}{% elif user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/default.png') }}{% endif %}"
                   alt="User Avatar"
-                  onerror="this.onerror=null;this.src='{{ url_for('static', filename='image/default.png') }}'"
+                  onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
                   class="user-delete-avatar"
                 />
               </td>

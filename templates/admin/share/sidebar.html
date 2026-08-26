@@ -8,7 +8,7 @@
         </div>
 
         <nav class="sidebar-menu" aria-label="Admin navigation">
-          <a href="{{ url_for('admin_dashboard') }}" class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+          <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span>
           </a>
@@ -36,11 +36,14 @@
         </nav>
 
         <div class="sidebar-profile">
-          <div class="profile-avatar">AD</div>
+          <div class="profile-avatar">{{ (session.get('username', 'A')[:2]) | upper }}</div>
           <div>
-            <strong>Admin User</strong>
+            <strong>{{ session.get('username', 'Admin User') }}</strong>
             <span>Store Manager</span>
           </div>
+          <a href="{{ url_for('admin_logout') }}" class="sidebar-logout-btn" title="Sign out">
+            <i class="bi bi-box-arrow-right"></i>
+          </a>
         </div>
 
       </aside>

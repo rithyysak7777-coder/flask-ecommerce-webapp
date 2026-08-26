@@ -32,8 +32,14 @@
       <span class="price-current">${{ "%.2f"|format(item.price) }}</span>
     </div>
   </div>
-  <a href="{{ url_for('cart', product_id=item.id) }}" class="add-to-cart-btn">
-    Add to Cart
-  </a>
+  {% if session.get('user') %}
+    <a href="{{ url_for('cart', product_id=item.id) }}" class="add-to-cart-btn">
+      Add to Cart
+    </a>
+  {% else %}
+    <a href="{{ url_for('login') }}" class="add-to-cart-btn">
+      <i class="bi bi-box-arrow-in-right me-1"></i> Sign in to Buy
+    </a>
+  {% endif %}
 </div>
 {% endmacro %}

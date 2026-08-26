@@ -1476,7 +1476,10 @@ footer {
 :root[data-theme="dark"] .payment-panel-heading h2,
 :root[data-theme="dark"] .payment-summary h2,
 :root[data-theme="dark"] .summary-product h3,
-:root[data-theme="dark"] .empty-search h2 {
+:root[data-theme="dark"] .empty-search h2,
+:root[data-theme="dark"] .auth-card-header h2,
+:root[data-theme="dark"] .auth-field-group label,
+:root[data-theme="dark"] .auth-benefit-item strong {
   color: var(--gold-light) !important;
 }
 
@@ -1513,7 +1516,9 @@ footer {
 :root[data-theme="dark"] .continue-shopping-link,
 :root[data-theme="dark"] .back-link,
 :root[data-theme="dark"] .back-account-link,
-:root[data-theme="dark"] .account-row a {
+:root[data-theme="dark"] .account-row a,
+:root[data-theme="dark"] .auth-forgot-link,
+:root[data-theme="dark"] .auth-switch a {
   color: var(--gold-light) !important;
 }
 
@@ -1539,6 +1544,7 @@ footer {
 :root[data-theme="dark"] .about-section,
 :root[data-theme="dark"] .values-section,
 :root[data-theme="dark"] .account-page,
+:root[data-theme="dark"] .auth-page,
 :root[data-theme="dark"] .reset-page,
 :root[data-theme="dark"] .payment-page,
 :root[data-theme="dark"] .search-page,
@@ -1559,6 +1565,8 @@ footer {
 :root[data-theme="dark"] .category-card,
 :root[data-theme="dark"] .value-card,
 :root[data-theme="dark"] .account-card,
+:root[data-theme="dark"] .auth-card,
+:root[data-theme="dark"] .auth-benefit-item,
 :root[data-theme="dark"] .order-history-item,
 :root[data-theme="dark"] .contact-info-box,
 :root[data-theme="dark"] .reset-card,
@@ -1654,8 +1662,57 @@ footer {
 :root[data-theme="dark"] .feature-icon,
 :root[data-theme="dark"] .value-card i,
 :root[data-theme="dark"] .account-card-heading i,
+:root[data-theme="dark"] .auth-benefit-icon,
+:root[data-theme="dark"] .auth-header-badge,
+:root[data-theme="dark"] .auth-copy .section-subtitle,
 :root[data-theme="dark"] .reset-icon,
 :root[data-theme="dark"] .benefit-card i,
 :root[data-theme="dark"] .payment-panel-heading i {
   background: rgba(244, 207, 99, 0.12) !important;
+  color: var(--gold-light) !important;
 }
+
+:root[data-theme="dark"] .auth-input:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 4px rgba(244, 207, 99, 0.2) !important;
+}
+
+:root[data-theme="dark"] .auth-input-wrapper:focus-within .auth-input-icon {
+  color: var(--gold-light) !important;
+}
+
+:root[data-theme="dark"] .auth-password-toggle {
+  color: #94a3b8 !important;
+}
+
+:root[data-theme="dark"] .auth-password-toggle:hover {
+  color: #f8fafc !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+:root[data-theme="dark"] .auth-switch-banner {
+  background: rgba(17, 24, 39, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+:root[data-theme="dark"] .auth-switch-text strong {
+  color: var(--gold-light) !important;
+}
+
+:root[data-theme="dark"] .auth-switch-text p {
+  color: #94a3b8 !important;
+}
+
+:root[data-theme="dark"] .auth-switch-btn-login,
+:root[data-theme="dark"] .auth-switch-btn-register {
+  background: var(--gold) !important;
+  color: #05070b !important;
+  box-shadow: 0 4px 14px rgba(242, 201, 76, 0.25) !important;
+}
+
+:root[data-theme="dark"] .auth-switch-btn-login:hover,
+:root[data-theme="dark"] .auth-switch-btn-register:hover {
+  background: var(--gold-light) !important;
+  color: #000000 !important;
+}
+

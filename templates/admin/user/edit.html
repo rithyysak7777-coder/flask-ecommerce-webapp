@@ -15,50 +15,54 @@
       Back
     </a>
   </section>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }} user-alert">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
 
   <section class="panel edit-panel">
     <div class="panel-header">
       <div>
         <span>Edit Account</span>
-        <h4>Update user details for ID {{ user_id }}</h4>
+        <h4>Update user details for ID {{ user.id if user else user_id }}</h4>
       </div>
     </div>
 
-    <div class="edit-layout">
-      <div class="edit-card">
-        <div class="edit-card-top">
-          <img
-            id="output"
-            src="{{ user.profile if user and user.profile else url_for('static', filename='image/default.png') }}"
-            alt="User profile image"
-            onerror="this.onerror=null;this.src='{{ url_for('static', filename='image/default.png') }}'"
-            class="edit-card-avatar"
-          />
-          <div class="edit-card-info">
-            <strong>Profile Avatar</strong>
-            <span>
-              Select a profile image for the user and preview it here.
-            </span>
+    <form id="editUserForm" action="{{url_for('do_edit_user')}}" method="POST" enctype="multipart/form-data" class="edit-form">
+      <div class="edit-layout">
+        <div class="edit-card">
+          <div class="edit-card-top">
+            <img
+              id="output"
+              src="{% if user and user.profile and user.profile.startswith('/') %}{{ user.profile }}{% elif user and user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/default.png') }}{% endif %}"
+              alt="User profile image"
+              onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
+              class="edit-card-avatar"
+            />
+            <div class="edit-card-info">
+              <strong>Profile Avatar</strong>
+              <span>
+                Select a profile image for the user and preview it here.
+              </span>
+            </div>
+          </div>
+
+          <div class="edit-card-actions">
+            <label for="image" class="edit-upload-label">
+              <i class="bi bi-upload"></i>
+              Choose File
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onchange="loadFile(event)"
+              class="edit-file-input"
+            />
           </div>
         </div>
 
-        <div class="edit-card-actions">
-          <label for="profile_image" class="edit-upload-label">
-            <i class="bi bi-upload"></i>
-            Choose File
-          </label>
-          <input
-            type="file"
-            id="profile_image"
-            name="profile_image"
-            accept="image/*"
-            onchange="loadFile(event)"
-            class="edit-file-input"
-          />
-        </div>
-      </div>
-
-      <form action="{{url_for('do_edit_user')}}" method="POST" class="edit-form">
         <input type="hidden" name="user_id" id="user_id" value="{{ user.id if user else user_id }}" />
         <input type="hidden" name="id" id="id" value="{{ user.id if user else user_id }}" />
         <div class="edit-form-box">
@@ -116,8 +120,8 @@
             Save
           </button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </section>
 </main>
 

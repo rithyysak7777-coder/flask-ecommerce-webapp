@@ -21,12 +21,13 @@
       <div class="profile-main">
         <div class="profile-avatar-card">
           <img
-            src="{{ url_for('static', filename='image/profile.png') }}"
-            alt="{{ user.name }}"
+            src="{% if user and user.profile and user.profile.startswith('/') %}{{ user.profile }}{% elif user and user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/profile.png') }}{% endif %}"
+            alt="{{ user.username or user.name }}"
+            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
             class="profile-avatar"
           />
           <div class="profile-header">
-            <h4>{{ user.name }}</h4>
+            <h4>{{ user.username or user.name }}</h4>
             <span>{{ user.role }}</span>
             <p>{{ user.email }}</p>
           </div>

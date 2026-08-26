@@ -6,77 +6,134 @@
   <body>
     {% include 'front/share/navbar.html' %}
 
-    <main class="auth-page">
+    <main class="auth-page auth-page-login">
       <div class="container auth-shell">
         <section class="auth-copy">
-          <div class="section-subtitle">Member Access</div>
+          <div class="section-subtitle auth-subtitle-login">
+            <i class="bi bi-shield-lock-fill me-1"></i> Member Sign In
+          </div>
           <h1>Welcome back to <span>Ractz</span></h1>
-          <p>Sign in to review your cart, orders, checkout details, and saved account information.</p>
+          <p>Sign in to review your cart, track active orders, access saved checkout details, and manage your account.</p>
 
           <div class="auth-benefits">
-            <div>
-              <i class="bi bi-bag-check"></i>
-              <span>Order tracking</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-login"><i class="bi bi-bag-check-fill"></i></div>
+              <div>
+                <strong>Order Tracking</strong>
+                <span>Monitor real-time delivery status</span>
+              </div>
             </div>
-            <div>
-              <i class="bi bi-shield-check"></i>
-              <span>Secure checkout</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-login"><i class="bi bi-shield-check"></i></div>
+              <div>
+                <strong>Secure Checkout</strong>
+                <span>Protected payment & encrypted session</span>
+              </div>
             </div>
-            <div>
-              <i class="bi bi-stars"></i>
-              <span>Member offers</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-login"><i class="bi bi-stars"></i></div>
+              <div>
+                <strong>Member Benefits</strong>
+                <span>Instant access to saved cart items</span>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="auth-card">
+        <section class="auth-card auth-card-login">
+          <div class="auth-card-accent-bar auth-accent-login"></div>
+
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               <div class="auth-alerts">
                 {% for category, message in messages %}
-                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                  <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" onclick="this.parentElement.remove()" aria-label="Close"></button>
+                  </div>
                 {% endfor %}
               </div>
             {% endif %}
           {% endwith %}
 
-          <div class="account-card-heading contact-heading">
+          <div class="account-card-heading auth-card-header">
             <div>
-              <h2>Login</h2>
-              <p>Use your email and password to continue.</p>
+              <h2>Sign In</h2>
+              <p>Enter your email and password to log in.</p>
             </div>
-            <i class="bi bi-person-lock"></i>
+            <div class="auth-header-badge auth-badge-login">
+              <i class="bi bi-person-lock"></i>
+            </div>
           </div>
 
           <form class="account-form auth-form" method="POST" action="{{ url_for('login') }}">
-            <div class="mb-4">
-              <label for="login-email">Email</label>
-              <input id="login-email" name="email" class="form-control w-100" type="email" placeholder="Your email" required />
+            <div class="auth-field-group">
+              <label for="login-email">Email Address</label>
+              <div class="auth-input-wrapper">
+                <i class="bi bi-envelope auth-input-icon"></i>
+                <input id="login-email" name="email" class="form-control auth-input" type="email" placeholder="name@example.com" required autocomplete="email" />
+              </div>
             </div>
-            <div class="mb-4">
+
+            <div class="auth-field-group">
               <label for="login-password">Password</label>
-              <input id="login-password" name="password" class="form-control w-100" type="password" placeholder="Your password" required />
+              <div class="auth-input-wrapper">
+                <i class="bi bi-lock auth-input-icon"></i>
+                <input id="login-password" name="password" class="form-control auth-input" type="password" placeholder="Enter your password" required autocomplete="current-password" />
+                <button type="button" class="auth-password-toggle" onclick="togglePasswordVisibility('login-password', this)" title="Toggle Password Visibility" aria-label="Toggle password visibility">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
             </div>
 
-            <div class="account-row">
+            <div class="account-row auth-actions-row">
               <label class="account-check">
-                <input type="checkbox" />
-                Remember me
+                <input type="checkbox" name="remember" />
+                <span>Remember me</span>
               </label>
-              <a href="{{ url_for('reset_password') }}">Forgot password?</a>
+              <a href="{{ url_for('reset_password') }}" class="auth-forgot-link">Forgot password?</a>
             </div>
 
-            <button class="account-btn" type="submit">Sign in</button>
+            <button class="account-btn auth-submit-btn auth-btn-login" type="submit">
+              <span>Sign In</span>
+              <i class="bi bi-arrow-right-short"></i>
+            </button>
           </form>
 
-          <p class="auth-switch">
-            New to Ractz?
-            <a href="{{ url_for('register') }}">Create an account</a>
-          </p>
+          <!-- PROMINENT DON'T HAVE AN ACCOUNT CALLOUT -->
+          <div class="auth-switch-banner auth-switch-banner-login">
+            <div class="auth-switch-text">
+              <strong>Don't have an account?</strong>
+              <p>Sign up now to enjoy member perks & fast checkout.</p>
+            </div>
+            <a href="{{ url_for('register') }}" class="auth-switch-btn auth-switch-btn-login">
+              Create Account
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
         </section>
       </div>
     </main>
 
+    <script>
+      function togglePasswordVisibility(inputId, toggleBtn) {
+        const input = document.getElementById(inputId);
+        const icon = toggleBtn.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
+      }
+    </script>
+
     {% include 'front/share/footer.html' %}
   </body>
 </html>
+
+

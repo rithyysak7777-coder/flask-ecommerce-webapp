@@ -6,73 +6,134 @@
   <body>
     {% include 'front/share/navbar.html' %}
 
-    <main class="auth-page">
+    <main class="auth-page auth-page-register">
       <div class="container auth-shell auth-shell-register">
         <section class="auth-copy">
-          <div class="section-subtitle">Create Account</div>
+          <div class="section-subtitle auth-subtitle-register">
+            <i class="bi bi-person-plus-fill me-1"></i> Account Registration
+          </div>
           <h1>Join the <span>Ractz</span> collection</h1>
-          <p>Create your customer profile for faster checkout, saved orders, and member shopping access.</p>
+          <p>Create your customer profile today to enjoy express checkout, saved wishlist items, order history, and exclusive rewards.</p>
 
           <div class="auth-benefits">
-            <div>
-              <i class="bi bi-lightning-charge"></i>
-              <span>Fast checkout</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-register"><i class="bi bi-lightning-charge-fill"></i></div>
+              <div>
+                <strong>Express Checkout</strong>
+                <span>Save default addresses & fast payment</span>
+              </div>
             </div>
-            <div>
-              <i class="bi bi-clock-history"></i>
-              <span>Order history</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-register"><i class="bi bi-clock-history"></i></div>
+              <div>
+                <strong>Order History & Reorder</strong>
+                <span>Track purchases & easy one-click reorder</span>
+              </div>
             </div>
-            <div>
-              <i class="bi bi-gift"></i>
-              <span>Sale updates</span>
+            <div class="auth-benefit-item">
+              <div class="auth-benefit-icon auth-icon-register"><i class="bi bi-gift-fill"></i></div>
+              <div>
+                <strong>VIP Early Access</strong>
+                <span>Exclusive member discounts & new drops</span>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="auth-card">
+        <section class="auth-card auth-card-register">
+          <div class="auth-card-accent-bar auth-accent-register"></div>
+
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               <div class="auth-alerts">
                 {% for category, message in messages %}
-                  <div class="alert alert-{{ category }}">{{ message }}</div>
+                  <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" onclick="this.parentElement.remove()" aria-label="Close"></button>
+                  </div>
                 {% endfor %}
               </div>
             {% endif %}
           {% endwith %}
 
-          <div class="account-card-heading contact-heading">
+          <div class="account-card-heading auth-card-header">
             <div>
-              <h2>Register</h2>
-              <p>Fill in your details to create an account.</p>
+              <h2>Create Account</h2>
+              <p>Fill in your profile details to register.</p>
             </div>
-            <i class="bi bi-person-plus"></i>
+            <div class="auth-header-badge auth-badge-register">
+              <i class="bi bi-person-plus"></i>
+            </div>
           </div>
 
           <form class="account-form auth-form" method="POST" action="{{ url_for('register') }}">
-            <div class="mb-4">
-              <label for="register-name">Name</label>
-              <input id="register-name" name="name" class="form-control w-100" type="text" placeholder="Your full name" required />
-            </div>
-            <div class="mb-4">
-              <label for="register-email">Email</label>
-              <input id="register-email" name="email" class="form-control w-100" type="email" placeholder="Your email" required />
-            </div>
-            <div class="mb-4">
-              <label for="register-password">Password</label>
-              <input id="register-password" name="password" class="form-control w-100" type="password" placeholder="Create password" required />
+            <div class="auth-field-group">
+              <label for="register-name">Full Name</label>
+              <div class="auth-input-wrapper">
+                <i class="bi bi-person auth-input-icon"></i>
+                <input id="register-name" name="name" class="form-control auth-input" type="text" placeholder="John Doe" required autocomplete="name" />
+              </div>
             </div>
 
-            <button class="account-btn" type="submit">Create account</button>
+            <div class="auth-field-group">
+              <label for="register-email">Email Address</label>
+              <div class="auth-input-wrapper">
+                <i class="bi bi-envelope auth-input-icon"></i>
+                <input id="register-email" name="email" class="form-control auth-input" type="email" placeholder="name@example.com" required autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="auth-field-group">
+              <label for="register-password">Password</label>
+              <div class="auth-input-wrapper">
+                <i class="bi bi-lock auth-input-icon"></i>
+                <input id="register-password" name="password" class="form-control auth-input" type="password" placeholder="Create a strong password" required autocomplete="new-password" />
+                <button type="button" class="auth-password-toggle" onclick="togglePasswordVisibility('register-password', this)" title="Toggle Password Visibility" aria-label="Toggle password visibility">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="account-btn auth-submit-btn auth-btn-register" type="submit">
+              <span>Create Account</span>
+              <i class="bi bi-arrow-right-short"></i>
+            </button>
           </form>
 
-          <p class="auth-switch">
-            Already have an account?
-            <a href="{{ url_for('login') }}">Sign in</a>
-          </p>
+          <!-- PROMINENT ALREADY HAVE AN ACCOUNT CALLOUT -->
+          <div class="auth-switch-banner auth-switch-banner-register">
+            <div class="auth-switch-text">
+              <strong>Already have an account?</strong>
+              <p>Log in now to access your existing profile & orders.</p>
+            </div>
+            <a href="{{ url_for('login') }}" class="auth-switch-btn auth-switch-btn-register">
+              Sign In
+              <i class="bi bi-box-arrow-in-right"></i>
+            </a>
+          </div>
         </section>
       </div>
     </main>
 
+    <script>
+      function togglePasswordVisibility(inputId, toggleBtn) {
+        const input = document.getElementById(inputId);
+        const icon = toggleBtn.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
+      }
+    </script>
+
     {% include 'front/share/footer.html' %}
   </body>
 </html>
+
+

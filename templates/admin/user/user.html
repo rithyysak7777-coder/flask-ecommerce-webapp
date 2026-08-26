@@ -90,9 +90,10 @@
   <td data-label="ID">{{ user.id }}</td>
   <td data-label="Profile">
     <div class="user-cell">
-      <!-- You can also make the image dynamic if you have it in your database -->
       <img
-        src="" alt="" onerror="this.onerror=null;this.src='{{ url_for('static', filename='image/default.png') }}'"
+        src="{% if user.profile and user.profile.startswith('/') %}/{{ user.profile }}{% elif user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/default.png') }}{% endif %}"
+        alt="{{ user.username }}"
+        onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
         class="user-avatar"
       />
     </div>
