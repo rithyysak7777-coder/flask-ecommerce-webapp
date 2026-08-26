@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, jsonify, session, flash, request , session
+from flask import Flask, render_template, request, make_response, redirect, url_for, jsonify, session, flash, send_from_directory
 from product import get_product_by_id, get_product_by_category ,product as pr
 from memory_store import load_users, save_users
 import json
@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import os
 from datetime import timedelta
 from functools import wraps
+from PIL import Image
 
 # confix to connect with database
 app = Flask(__name__)
@@ -36,6 +37,43 @@ def generate_image_filename(original_filename, module, action, username):
     clean_username = secure_filename(username or 'user').replace(' ', '_') or 'user'
     ext = original_filename.rsplit('.', 1)[-1].lower() if '.' in original_filename else 'png'
     return f"{timestamp}_{module}_{action}_{clean_username}.{ext}"
+
+def process_user_profile_image(file, user_id, username):
+    # Enforce 5MB limit
+    file.seek(0, os.SEEK_END)
+    file_size = file.tell()
+    file.seek(0)
+
+    if file_size > 5 * 1024 * 1024:
+        return None, "File size exceeds 5MB limit."
+
+    clean_username = secure_filename(username or 'user').replace(' ', '_') or 'user'
+    ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else 'png'
+
+    org_filename = f"{user_id}_org_{clean_username}.{ext}"
+    thum_filename = f"{user_id}_thum_{clean_username}.jpg"
+
+    org_path = os.path.join(UPLOAD_DIR, org_filename)
+    thum_path = os.path.join(UPLOAD_DIR, thum_filename)
+
+    # Version 1: Save Original (100% Quality)
+    file.save(org_path)
+
+    # Version 2: Save Thumbnail (-80% quality reduction / 20% quality & 150x150 max dimensions)
+    try:
+        with Image.open(org_path) as img:
+            # Resize image down to thumbnail dimensions
+            img.thumbnail((150, 150))
+            if img.mode in ("RGBA", "P"):
+                rgb_img = img.convert("RGB")
+            else:
+                rgb_img = img
+            # Save at 20% quality (-80% quality reduction)
+            rgb_img.save(thum_path, format="JPEG", quality=20)
+    except Exception as e:
+        print(f"Error processing thumbnail image: {e}")
+
+    return org_filename, None
 
 # Create for instance , db and migrate
 db = SQLAlchemy(app)
@@ -505,27 +543,29 @@ def do_add_user():
     form = request.form
     name = form.get('name') or form.get('username')
     email = form.get('email')
-
-    filename = None
-    file = request.files.get("image")
-    if file and file.filename and allowed(file.filename):
-        filename = generate_image_filename(file.filename, module, 'add', name)
-        file.save(os.path.join(UPLOAD_DIR, filename))
-
     password = generate_password_hash(form.get('password'))
     role = form.get('role', 'User')
 
-    # new object
     u = User(
         username=name,
         email=email,
         password=password,
         role=role,
-        profile=filename,
+        profile='default.png',
         status='Active'
     )
     db.session.add(u)
     db.session.commit()
+
+    file = request.files.get("image")
+    if file and file.filename and allowed(file.filename):
+        filename, err = process_user_profile_image(file, u.id, name)
+        if err:
+            flash(err, 'danger')
+        elif filename:
+            u.profile = filename
+            db.session.commit()
+
     return redirect(url_for('user'))
 
 @app.get('/admin/user/confirm-delete/<int:user_id>')
@@ -589,9 +629,11 @@ def do_edit_user():
 
     file = request.files.get("image")
     if file and file.filename and allowed(file.filename):
-        filename = generate_image_filename(file.filename, module, 'edit', user.username)
-        file.save(os.path.join(UPLOAD_DIR, filename))
-        user.profile = filename
+        filename, err = process_user_profile_image(file, user.id, user.username)
+        if err:
+            flash(err, 'danger')
+        elif filename:
+            user.profile = filename
 
     if form.get('password') is not None and form.get('password').strip() != '':
         user.password = generate_password_hash(form.get('password'))
@@ -613,6 +655,35 @@ def user_profile(user_id):
     else:
         return redirect(url_for('user'))
     return render_template('admin/user/profile.html', module=module, user=user)
+
+@app.get('/admin/user/photo/<int:user_id>/<string:photo_type>')
+@login_required
+def user_photo(user_id, photo_type):
+    user = User.query.get(user_id)
+    default_filename = 'default.png'
+
+    if not user or not user.profile or user.profile == 'default.png':
+        return send_from_directory(UPLOAD_DIR, default_filename)
+
+    clean_username = secure_filename(user.username or 'user').replace(' ', '_') or 'user'
+
+    if photo_type == 'thum':
+        thum_filename = f"{user.id}_thum_{clean_username}.jpg"
+        if os.path.exists(os.path.join(UPLOAD_DIR, thum_filename)):
+            return send_from_directory(UPLOAD_DIR, thum_filename)
+        if os.path.exists(os.path.join(UPLOAD_DIR, user.profile)):
+            return send_from_directory(UPLOAD_DIR, user.profile)
+    else:
+        # photo_type == 'org'
+        if os.path.exists(os.path.join(UPLOAD_DIR, user.profile)):
+            return send_from_directory(UPLOAD_DIR, user.profile)
+        org_prefix = f"{user.id}_org_"
+        if os.path.exists(UPLOAD_DIR):
+            for f in os.listdir(UPLOAD_DIR):
+                if f.startswith(org_prefix):
+                    return send_from_directory(UPLOAD_DIR, f)
+
+    return send_from_directory(UPLOAD_DIR, default_filename)
 
 
 

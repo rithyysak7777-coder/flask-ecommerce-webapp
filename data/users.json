@@ -28,5 +28,10 @@
     "name": "SakSak",
     "password": "123456789",
     "orders": []
+  },
+  "Sakk@gmail.com": {
+    "name": "SokRithysak",
+    "password": "123",
+    "orders": []
   }
 }

@@ -34,7 +34,7 @@
           <div class="edit-card-top">
             <img
               id="output"
-              src="{% if user and user.profile and user.profile.startswith('/') %}{{ user.profile }}{% elif user and user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/default.png') }}{% endif %}"
+              src="{{ url_for('user_photo', user_id=user.id, photo_type='org') }}"
               alt="User profile image"
               onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
               class="edit-card-avatar"

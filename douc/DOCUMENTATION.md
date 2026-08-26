@@ -143,12 +143,19 @@ flask/
   - `role`: String(80)
   - `profile`: String(255)
   - `status`: String(80)
+- **User Profile Image Processing & Path Protection**:
+  - **5MB File Size Limit**: Enforces a strict 5MB file upload validation limit per image.
+  - **Dual-Version Image Generation**:
+    - **Original Version (100% Quality)**: Saved as `static/images/{user_id}_org_{username}.{ext}` (Full resolution for Detail `profile.html` & Edit `edit.html` views).
+    - **Thumbnail Version (-80% Quality Reduction)**: Resized down to max 150x150 pixels and saved as `static/images/{user_id}_thum_{username}.jpg` at 20% JPEG quality using Pillow for fast loading in the User Directory table (`user.html`).
+  - **Secure Photo Serving Route (`user_photo`)**: Serves profile images via `@app.get('/admin/user/photo/<int:user_id>/<string:photo_type>')` to obfuscate internal filesystem paths and protect system file structures from browser source code inspection.
+
 - **User CRUD Features**:
-  - **List Users** (`GET /admin/user`): Executes SQL queries `SELECT * FROM user` mapped to dictionaries.
-  - **Add User** (`GET/POST /admin/user/add`): Creates a new `User` ORM instance and commits to SQLite.
-  - **Edit User** (`GET/POST /admin/user/edit/<user_id>`): Updates existing user records.
+  - **List Users** (`GET /admin/user`): Executes SQL queries `SELECT * FROM user` mapped to dictionaries and displays 80% quality reduced thumbnails (`thum`).
+  - **Add User** (`GET/POST /admin/user/add`): Creates a new `User` ORM instance, processes dual image versions, and commits to SQLite.
+  - **Edit User** (`GET/POST /admin/user/edit/<user_id>`): Updates existing user records and profile photos.
   - **Delete User** (`GET /admin/user/confirm-delete/<user_id>`, `POST /admin/user/delete`): Confirmation view before permanently deleting a user.
-  - **User Profile** (`GET /admin/user/profile/<user_id>`): Views detailed user information.
+  - **User Profile** (`GET /admin/user/profile/<user_id>`): Views detailed user information with 100% full quality original photo (`org`).
 
 ---
 

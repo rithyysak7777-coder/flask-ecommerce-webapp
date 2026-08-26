@@ -142,10 +142,17 @@ flask/
   - `role`: សិទ្ធិប្រើប្រាស់ (Admin / User)
   - `profile`: រូបភាព Profile (Default: `/static/images/default.png`)
   - `status`: ស្ថានភាព (Active / Inactive)
+- **ប្រព័ន្ធគ្រប់គ្រងរូបភាព Profile និងសុវត្ថិភាព Path (Dual-Image & Path Security)**:
+  - **កំណត់ទំហំ Upload អតិបរមា 5MB**៖ ពិនិត្យមើលទំហំរូបភាព Upload មិនឲ្យលើសពី 5MB។
+  - **ការបង្កើតរូបភាពជា ២ Version ស្វ័យប្រវត្តិ**៖
+    - **Version 1 (Original 100% Quality)**៖ រក្សាទុកជា `static/images/{user_id}_org_{username}.{ext}` (គុណភាពដើម 100% សម្រាប់បង្ហាញក្នុងទំព័រ Detail `profile.html` និង Edit `edit.html`)។
+    - **Version 2 (Thumbnail -80% Quality Reduction)**៖ បង្រួមទំហំមកត្រឹម 150x150px និងបន្ថយគុណភាពមកត្រឹម 20% (កាត់បន្ថយ 80%) រក្សាទុកជា `static/images/{user_id}_thum_{username}.jpg` ដោយប្រើប្រាស់ Pillow (សម្រាប់បង្ហាញក្នុងបញ្ជី User Directory `user.html`)។
+  - **Route បិទបាំង Path រូបភាព (`user_photo`)**៖ ប្រើប្រាស់ Route `@app.get('/admin/user/photo/<int:user_id>/<string:photo_type>')` ដើម្បីទាញយករូបភាពដោយមិនបង្ហាញ Path ផ្ទាល់ក្នុង Browser HTML Source Code។
+
 - **មុខងារ CRUD**:
-  - **Read/List Users** (`GET /admin/user`)៖ បាញ់ SQL Query រកមើល User ទាំងអស់តាមរយៈ `text("SELECT * FROM user")` រួច Mapping ទៅកាន់ Template។
-  - **Create/Add User** (`POST /admin/user/add`)៖ ទទួល Form data បង្កើត Instance នៃ `User` Model រួច Save ចូល SQLite តាមរយៈ `db.session.add()` និង `db.session.commit()`។
-  - **Update/Edit User** (`POST /admin/user/edit`)៖ ស្វែងរក User តាម ID រួច Update ព័ត៌មានបង្កើតថ្មី។
+  - **Read/List Users** (`GET /admin/user`)៖ បាញ់ SQL Query រកមើល User ទាំងអស់តាមរយៈ `text("SELECT * FROM user")` រួច Mapping ទៅកាន់ Template ដោយបង្ហាញរូបភាព Thumbnail (`thum`)។
+  - **Create/Add User** (`POST /admin/user/add`)៖ ទទួល Form data បង្កើត Instance នៃ `User` Model បង្កើតរូបភាព ២ version (Original & Thumbnail) រួច Save ចូល SQLite តាម `db.session.add()` និង `db.session.commit()`។
+  - **Update/Edit User** (`POST /admin/user/edit`)៖ ស្វែងរក User តាម ID រួច Update ព័ត៌មាន និងរូបភាព Profile ថ្មី។
   - **Delete User** (`POST /admin/user/delete`)៖ មានទំព័រ Confirm Delete (`comfirm_delete.html`) មុននឹងលុបចេញពី Database តាម `db.session.delete()`។
 
 ---

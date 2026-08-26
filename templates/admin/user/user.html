@@ -91,7 +91,7 @@
   <td data-label="Profile">
     <div class="user-cell">
       <img
-        src="{% if user.profile and user.profile.startswith('/') %}/{{ user.profile }}{% elif user.profile %}{{ url_for('static', filename='images/' + user.profile) }}{% else %}{{ url_for('static', filename='images/default.png') }}{% endif %}"
+        src="{{ url_for('user_photo', user_id=user.id, photo_type='thum') }}"
         alt="{{ user.username }}"
         onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
         class="user-avatar"
