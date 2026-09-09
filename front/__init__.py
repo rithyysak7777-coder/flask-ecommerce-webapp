@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 # Register blueprint
-front_bp = Blueprint('simple_page', __name__, template_folder='templates')
+front_bp = Blueprint('front_bp', __name__, template_folder='templates')
 
 # Register submodules
 from . import home

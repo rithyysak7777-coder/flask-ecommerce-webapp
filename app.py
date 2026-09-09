@@ -20,7 +20,7 @@ migrate.init_app(app, db)
 def url_fallback(error, endpoint, values):
     if '.' in endpoint:
         raise error
-    for bp_name in ['simple_page', 'admin_bp', 'api_bp']:
+    for bp_name in ['front_bp', 'admin_bp', 'api_bp']:
         full_endpoint = f"{bp_name}.{endpoint}"
         if full_endpoint in app.view_functions:
             return url_for(full_endpoint, **values)
