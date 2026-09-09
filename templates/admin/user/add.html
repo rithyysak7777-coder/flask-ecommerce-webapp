@@ -10,7 +10,7 @@
       <p>Users</p>
       <h3>Add New User</h3>
     </div>
-    <a href="{{ url_for('user') }}" class="export-btn edit-back-btn">
+    <a href="{{ url_for('admin_bp.user') }}" class="export-btn edit-back-btn">
       <i class="bi bi-arrow-left"></i>
       Back
     </a>
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <form id="addUserForm" action="{{ url_for('do_add_user') }}" method="POST" enctype="multipart/form-data">
+    <form id="addUserForm" action="{{ url_for('admin_bp.do_add_user') }}" method="POST" enctype="multipart/form-data">
       <div class="edit-layout">
         <div class="edit-card">
           <div class="edit-card-top">

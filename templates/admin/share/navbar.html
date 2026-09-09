@@ -19,16 +19,51 @@
           </form>
 
           <div class="navbar-actions">
-            <button type="button" aria-label="Notifications">
+            <button type="button" aria-label="Notifications" title="Notifications">
               <i class="bi bi-bell"></i>
               <span class="notification-dot"></span>
             </button>
             <a href="{{ url_for('home') }}" aria-label="Visit store" title="Visit Store">
               <i class="bi bi-shop"></i>
             </a>
-            <a href="{{ url_for('admin_logout') }}" class="btn-admin-logout" aria-label="Sign out" title="Sign out">
-              <i class="bi bi-box-arrow-right"></i>
-              <span>Sign Out</span>
-            </a>
+
+            <div class="admin-user-dropdown" id="adminUserDropdown">
+              <button
+                type="button"
+                class="admin-user-trigger"
+                id="adminUserTrigger"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <img
+                  src="{{ url_for('user_photo', user_id=session.get('user_id'), photo_type='thum') if session.get('user_id') else url_for('static', filename='images/default.png') }}"
+                  alt="{{ session.get('username', 'admin') }}"
+                  class="admin-nav-avatar"
+                  onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
+                />
+                <span class="admin-nav-name">{{ session.get('username', 'admin') }}</span>
+              </button>
+
+              <div class="admin-user-menu" id="adminUserMenu">
+                <div class="admin-user-header">
+                  <img
+                    src="{{ url_for('user_photo', user_id=session.get('user_id'), photo_type='thum') if session.get('user_id') else url_for('static', filename='images/default.png') }}"
+                    alt="{{ session.get('username', 'admin') }}"
+                    class="admin-user-menu-avatar"
+                    onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.png') }}'"
+                  />
+                  <p class="admin-user-menu-title">
+                    {{ session.get('username', 'admin') }} - {{ session.get('role', 'None') }}
+                  </p>
+                  <small class="admin-user-menu-subtitle">Member since {{ session.get('joined_date', 'Nov. 2023') }}</small>
+                </div>
+                <div class="admin-user-footer">
+                  <a href="{{ url_for('admin_logout') }}" class="btn-admin-logout" aria-label="Sign out" title="Sign out">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </nav>

@@ -55,7 +55,7 @@
       </div>
       {% endif %}
 
-      <form action="{{ url_for('delete_user') }}" method="POST" class="confirm-delete-form">
+      <form action="{{ url_for('admin_bp.delete_user') }}" method="POST" class="confirm-delete-form">
         {% if user %}
         <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}" />
         <input type="hidden" name="id" id="id" value="{{ user.id }}" />
@@ -67,7 +67,7 @@
             class="btn btn-danger confirm-delete-btn"
             >Danger Delete</button
           >
-          <a href="{{ url_for('user') }}" class="btn btn-outline-secondary"
+          <a href="{{ url_for('admin_bp.user') }}" class="btn btn-outline-secondary"
             >Cancel</a
           >
         </div>

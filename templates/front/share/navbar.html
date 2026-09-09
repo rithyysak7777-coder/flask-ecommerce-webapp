@@ -16,11 +16,11 @@
       </div>
 
       <ul class="nav-links">
-        <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint == 'home' else '' }}">Home</a></li>
-        <li><a href="{{ url_for('products') }}">Collections</a></li>
-        <li><a href="{{ url_for('sale') }}" class="{{ 'active' if request.endpoint == 'sale' else '' }}">Sale</a></li>
-        <li><a href="{{ url_for('about') }}">About</a></li>
-        <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' else '' }}">Contact</a></li>
+        <li><a href="{{ url_for('home') }}" class="{{ 'active' if request.endpoint in ['simple_page.home', 'home'] else '' }}">Home</a></li>
+        <li><a href="{{ url_for('products') }}" class="{{ 'active' if request.endpoint in ['simple_page.products', 'products', 'simple_page.product_detail', 'product_detail'] else '' }}">Collections</a></li>
+        <li><a href="{{ url_for('sale') }}" class="{{ 'active' if request.endpoint in ['simple_page.sale', 'sale'] else '' }}">Sale</a></li>
+        <li><a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint in ['simple_page.about', 'about'] else '' }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint in ['simple_page.contact', 'contact'] else '' }}">Contact</a></li>
       </ul>
 
       <div class="nav-icons">
@@ -32,7 +32,6 @@
           </button>
         </form>
 
-
         <a href="{{ url_for('account') }}" class="account-link" aria-label="My account">
           <i class="bi bi-person"></i>
         </a>
@@ -41,12 +40,13 @@
           <span class="cart-badge"></span>
         </a>
         <!-- Login / Register options -->
-        {% if session.get('user') %}
-          <span class="nav-user-greeting">Hi, {{ session.get('user').name.split(' ')[0] }}</span>
-          <a href="{{ url_for('logout') }}" class="nav-auth-btn nav-logout-btn">Logout</a>
+        {% set logged_user = session.get('user') or (session.get('is_login') and {'name': session.get('username', 'Admin')}) %}
+        {% if logged_user %}
+        <span class="nav-user-greeting">Hi, {{ ((logged_user.get('name') if logged_user is mapping else logged_user.name) or 'User').split(' ')[0] }}</span>
+        <a href="{{ url_for('logout') if session.get('user') else url_for('admin_logout') }}" class="nav-auth-btn nav-logout-btn">Logout</a>
         {% else %}
-          <a href="{{ url_for('login') }}" class="nav-auth-btn nav-login-btn">Login</a>
-          <a href="{{ url_for('register') }}" class="nav-auth-btn nav-register-btn">Register</a>
+        <a href="{{ url_for('login') }}" class="nav-auth-btn nav-login-btn">Login</a>
+        <a href="{{ url_for('register') }}" class="nav-auth-btn nav-register-btn">Register</a>
         {% endif %}
       </div>
     </div>

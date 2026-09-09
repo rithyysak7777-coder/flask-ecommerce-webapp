@@ -153,8 +153,8 @@ flask/
 - **User CRUD Features**:
   - **List Users** (`GET /admin/user`): Executes SQL queries `SELECT * FROM user` mapped to dictionaries and displays 80% quality reduced thumbnails (`thum`).
   - **Add User** (`GET/POST /admin/user/add`): Creates a new `User` ORM instance, processes dual image versions, and commits to SQLite.
-  - **Edit User** (`GET/POST /admin/user/edit/<user_id>`): Updates existing user records and profile photos.
-  - **Delete User** (`GET /admin/user/confirm-delete/<user_id>`, `POST /admin/user/delete`): Confirmation view before permanently deleting a user.
+  - **Edit User** (`GET/POST /admin/user/edit/<user_id>`): Updates existing user records and cleans up previous profile photos when replaced.
+  - **Delete User** (`GET /admin/user/confirm-delete/<user_id>`, `POST /admin/user/delete`): Confirmation view before permanently deleting a user. Automatically removes all associated original and thumbnail image files from `static/images`.
   - **User Profile** (`GET /admin/user/profile/<user_id>`): Views detailed user information with 100% full quality original photo (`org`).
 
 ---

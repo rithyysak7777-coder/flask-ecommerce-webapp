@@ -12,7 +12,7 @@
             <i class="bi bi-grid-1x2-fill"></i>
             <span>Dashboard</span>
           </a>
-         <a href="{{ url_for('user') }}" class="{% if request.endpoint == 'user' %}active{% endif %}">
+          <a href="{{ url_for('user') }}" class="{% if request.endpoint in ['user', 'admin_bp.user', 'add_user', 'admin_bp.add_user', 'edit_user', 'admin_bp.edit_user'] or (request.endpoint in ['user_profile', 'admin_bp.user_profile'] and request.view_args and request.view_args.get('user_id') != session.get('user_id')) %}active{% endif %}">
             <i class="bi bi-people"></i>
             <span>User</span>
           </a>
@@ -33,14 +33,30 @@
             <i class="bi bi-gear"></i>
             <span>Settings</span>
           </a>
+          <a href="{{ url_for('admin_bp.admin_profile') if session.get('user_id') else '#' }}" class="{% if request.endpoint in ['admin_bp.admin_profile', 'admin_profile'] or (request.endpoint in ['admin_bp.user_profile', 'user_profile'] and request.view_args and request.view_args.get('user_id') == session.get('user_id')) %}active{% endif %}">
+            <i class="bi bi-person-badge"></i>
+            <span>Profile</span>
+          </a>
         </nav>
 
         <div class="sidebar-profile">
-          <div class="profile-avatar">{{ (session.get('username', 'A')[:2]) | upper }}</div>
-          <div>
-            <strong>{{ session.get('username', 'Admin User') }}</strong>
-            <span>Store Manager</span>
-          </div>
+          <a href="{{ url_for('admin_bp.admin_profile') if session.get('user_id') else '#' }}" class="sidebar-profile-info" title="View Profile">
+            <div class="profile-avatar sidebar-profile-avatar">
+              <span class="profile-avatar-initials">{{ (session.get('username', 'A')[:2]) | upper }}</span>
+              {% if session.get('user_id') %}
+                <img
+                  src="{{ url_for('user_photo', user_id=session.get('user_id'), photo_type='thum') }}"
+                  alt="{{ session.get('username', 'Admin') }}"
+                  class="profile-avatar-img"
+                  onerror="this.remove();"
+                />
+              {% endif %}
+            </div>
+            <div class="sidebar-profile-text">
+              <strong>{{ session.get('username', 'Admin User') }}</strong>
+              <span>{{ session.get('role', 'Admin') }}</span>
+            </div>
+          </a>
           <a href="{{ url_for('admin_logout') }}" class="sidebar-logout-btn" title="Sign out">
             <i class="bi bi-box-arrow-right"></i>
           </a>

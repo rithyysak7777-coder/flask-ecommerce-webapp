@@ -153,7 +153,7 @@ flask/
   - **Read/List Users** (`GET /admin/user`)៖ បាញ់ SQL Query រកមើល User ទាំងអស់តាមរយៈ `text("SELECT * FROM user")` រួច Mapping ទៅកាន់ Template ដោយបង្ហាញរូបភាព Thumbnail (`thum`)។
   - **Create/Add User** (`POST /admin/user/add`)៖ ទទួល Form data បង្កើត Instance នៃ `User` Model បង្កើតរូបភាព ២ version (Original & Thumbnail) រួច Save ចូល SQLite តាម `db.session.add()` និង `db.session.commit()`។
   - **Update/Edit User** (`POST /admin/user/edit`)៖ ស្វែងរក User តាម ID រួច Update ព័ត៌មាន និងរូបភាព Profile ថ្មី។
-  - **Delete User** (`POST /admin/user/delete`)៖ មានទំព័រ Confirm Delete (`comfirm_delete.html`) មុននឹងលុបចេញពី Database តាម `db.session.delete()`។
+  - **Delete User** (`POST /admin/user/delete`)៖ មានទំព័រ Confirm Delete (`comfirm_delete.html`) មុននឹងលុបចេញពី Database តាម `db.session.delete()` ព្រមទាំងលុបរូបភាព Profile ទាំងអស់ (Original & Thumbnail) ចេញពី Directory `static/images` ដោយស្វ័យប្រវត្តិ។
 
 ---
 
