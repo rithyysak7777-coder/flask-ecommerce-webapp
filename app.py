@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask
 from config import Config
 from extensions import db, migrate
 import models
@@ -16,22 +16,13 @@ app.config.from_object(Config)
 db.init_app(app)
 migrate.init_app(app, db)
 
-# Fallback handler so templates calling url_for('user'), url_for('cart'), etc. resolve correctly across blueprints without recursion
-def url_fallback(error, endpoint, values):
-    if '.' in endpoint:
-        raise error
-    for bp_name in ['front_bp', 'admin_bp', 'api_bp']:
-        full_endpoint = f"{bp_name}.{endpoint}"
-        if full_endpoint in app.view_functions:
-            return url_for(full_endpoint, **values)
-    raise error
-
-app.url_build_error_handlers.append(url_fallback)
-
 # Register Blueprints
 app.register_blueprint(front_bp, url_prefix='/')
 app.register_blueprint(admin_bp, url_prefix='/admin')
 app.register_blueprint(api_bp, url_prefix='/api')
+
+# Shorthand url_for fallback
+helpers.register_url_fallbacks(app)
 
 if __name__ == '__main__':
     app.run(debug=True)

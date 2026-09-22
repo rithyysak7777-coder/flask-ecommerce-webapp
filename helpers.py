@@ -112,3 +112,20 @@ def delete_user_photos(user):
 @listens_for(User, 'before_delete')
 def delete_user_photos_event(mapper, connection, target):
     delete_user_photos(target)
+
+
+# Register fallback handler for shorthand url_for endpoints across blueprints
+def register_url_fallbacks(app):
+    from flask import url_for
+
+    def url_fallback(error, endpoint, values):
+        if '.' in endpoint:
+            raise error
+        for bp_name in ['front_bp', 'admin_bp', 'api_bp']:
+            full_endpoint = f"{bp_name}.{endpoint}"
+            if full_endpoint in app.view_functions:
+                return url_for(full_endpoint, **values)
+        raise error
+
+    app.url_build_error_handlers.append(url_fallback)
+
