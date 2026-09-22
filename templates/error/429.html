@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>429 Too Many Requests</title>
+  <style>
+    /* ===================================================
+       RESET & THEME VARIABLES
+    =================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(17, 24, 39, 0.85);
+      --card-border: rgba(245, 158, 11, 0.25);
+      --amber-main: #f59e0b;
+      --amber-light: #fbbf24;
+      --amber-glow: rgba(245, 158, 11, 0.18);
+      --text-title: #f9fafb;
+      --text-body: #9ca3af;
+      --text-muted: #6b7280;
+      --code-bg: #030712;
+      --code-border: #1f2937;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background-color: var(--bg-color);
+      background-image:
+        radial-gradient(ellipse at 50% -20%, rgba(245, 158, 11, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(30, 58, 138, 0.1) 0%, transparent 40%);
+      font-family: var(--font-sans);
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    /* ===================================================
+       CONTAINER & CARD
+    =================================================== */
+    .error-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--amber-glow);
+    }
+
+    /* ===================================================
+       BADGE & STATUS CODE
+    =================================================== */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--amber-light);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      margin-bottom: 1.25rem;
+    }
+
+    .status-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--amber-main);
+      box-shadow: 0 0 10px var(--amber-main);
+      animation: pulse 1.8s infinite;
+    }
+
+    .error-code {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text-title);
+      background: linear-gradient(180deg, #ffffff 30%, var(--amber-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.75rem;
+    }
+
+    .error-desc {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ===================================================
+       RATE LIMIT HIGHLIGHT BOX
+    =================================================== */
+    .limit-box {
+      background: var(--code-bg);
+      border: 1px dashed rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.75rem;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+
+    .limit-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+
+    .limit-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .limit-label {
+      color: var(--text-muted);
+    }
+
+    .limit-val {
+      color: var(--amber-light);
+      font-weight: 600;
+    }
+
+    /* ===================================================
+       COOLDOWN TIMER & PROGRESS BAR
+    =================================================== */
+    .timer-wrap {
+      margin-bottom: 2rem;
+    }
+
+    .timer-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .timer-val {
+      color: var(--text-title);
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #1f2937;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--amber-main), #ef4444);
+      border-radius: 9999px;
+      transform-origin: left center;
+      animation: countdownBar 60s linear forwards;
+    }
+
+    /* ===================================================
+       ACTION BUTTONS
+    =================================================== */
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--amber-main);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: var(--amber-light);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: var(--text-title);
+      border-color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #374151;
+    }
+
+    /* ===================================================
+       ANIMATIONS
+    =================================================== */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    @keyframes countdownBar {
+      0% { transform: scaleX(1); }
+      100% { transform: scaleX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="error-card">
+    <!-- Status Badge -->
+    <div class="status-badge">
+      <span class="dot"></span>
+      Rate Limit Exceeded
+    </div>
+
+    <!-- Error Title & HTTP Code -->
+    <div class="error-code">429</div>
+    <h1 class="error-title">Too Many Requests</h1>
+    <p class="error-desc">
+      You have exceeded your allowed request quota. Please slow down and wait for your rate limit window to reset.
+    </p>
+
+    <!-- Quota Specification Box -->
+    <div class="limit-box">
+      <div class="limit-row">
+        <span class="limit-label">Quota Limit:</span>
+        <span class="limit-val">10 requests</span>
+      </div>
+      <div class="limit-row">
+        <span class="limit-label">Time Window:</span>
+        <span class="limit-val">1 minute (60s)</span>
+      </div>
+      <div class="limit-row">
+        <span class="limit-label">Status:</span>
+        <span class="limit-val">Cooldown Active</span>
+      </div>
+    </div>
+
+    <!-- Progress / Cooldown -->
+    <div class="timer-wrap">
+      <div class="timer-label">
+        <span>Cooldown Window</span>
+        <span class="timer-val" id="timer">60s</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    {% set target_login_url = url_for('admin_bp.admin_login') if request.path.startswith('/admin') else url_for('front_bp.login') %}
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button class="btn btn-primary" id="retryBtn" onclick="returnToLogin()">Try Again</button>
+      <a href="{{ target_login_url }}" class="btn btn-secondary">Back to Login</a>
+    </div>
+  </main>
+
+  <script>
+    // Redirect target based on login type (admin or customer)
+    const targetLoginUrl = "{{ target_login_url }}";
+    let remaining = 60;
+    const timerElem = document.getElementById('timer');
+    const retryBtn = document.getElementById('retryBtn');
+
+    function returnToLogin() {
+      window.location.href = targetLoginUrl;
+    }
+
+    const interval = setInterval(() => {
+      remaining--;
+      if (remaining > 0) {
+        timerElem.textContent = remaining + 's';
+      } else {
+        clearInterval(interval);
+        timerElem.textContent = 'Ready';
+        retryBtn.textContent = 'Redirecting...';
+        // Automatically redirect back to login page so user can input credentials again
+        returnToLogin();
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>

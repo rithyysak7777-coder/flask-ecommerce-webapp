@@ -5,6 +5,8 @@ from werkzeug.security import check_password_hash
 from sqlalchemy import text
 from functools import wraps
 
+from extensions import limiter
+
 def login_required(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
@@ -19,6 +21,7 @@ def login_required(view):
     return wrapped
 
 @admin_bp.get('/login')
+@limiter.limit("10 per minute") # can refresh 10times
 def admin_login():
     if session.get('is_login'):
         if str(session.get('role', '')).strip().lower() == 'admin':
@@ -28,8 +31,14 @@ def admin_login():
     return render_template('admin/login.html', module=module)
 
 @admin_bp.post('/login')
+@limiter.limit("3 per minute")
 def do_admin_login():
     module = 'login'
+
+  #  test to error server
+  #   name_list = [1,2]
+  #   print(name_list[3])
+
     form = request.form
     username = (form.get('username') or '').strip()
     password = form.get('password') or ''

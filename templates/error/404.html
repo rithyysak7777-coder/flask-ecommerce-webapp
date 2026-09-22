@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Page Not Found</title>
+  <style>
+    /* ===================================================
+       RESET & THEME VARIABLES
+    =================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(17, 24, 39, 0.85);
+      --card-border: rgba(99, 102, 241, 0.25);
+      --primary-main: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.2);
+      --text-title: #f9fafb;
+      --text-body: #9ca3af;
+      --text-muted: #6b7280;
+      --code-bg: #030712;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background-color: var(--bg-color);
+      background-image:
+        radial-gradient(ellipse at 50% -20%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
+      font-family: var(--font-sans);
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    /* ===================================================
+       CONTAINER & CARD
+    =================================================== */
+    .error-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--primary-glow);
+    }
+
+    /* ===================================================
+       BADGE & STATUS CODE
+    =================================================== */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--primary-light);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      margin-bottom: 1.25rem;
+    }
+
+    .status-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--primary-main);
+      box-shadow: 0 0 10px var(--primary-main);
+      animation: pulse 1.8s infinite;
+    }
+
+    .error-code {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--text-title);
+      background: linear-gradient(180deg, #ffffff 30%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.75rem;
+    }
+
+    .error-desc {
+      font-size: 0.95rem;
+      color: var(--text-body);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ===================================================
+       REQUEST DETAILS BOX
+    =================================================== */
+    .details-box {
+      background: var(--code-bg);
+      border: 1px dashed rgba(99, 102, 241, 0.35);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .details-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .details-label {
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .details-val {
+      color: var(--primary-light);
+      font-weight: 500;
+      word-break: break-all;
+      text-align: right;
+    }
+
+    /* ===================================================
+       ACTION BUTTONS
+    =================================================== */
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary-main);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: var(--text-title);
+      border-color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #374151;
+    }
+
+    /* ===================================================
+       ANIMATIONS
+    =================================================== */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="error-card">
+    <!-- Status Badge -->
+    <div class="status-badge">
+      <span class="dot"></span>
+      Resource Missing
+    </div>
+
+    <!-- Error Title & HTTP Code -->
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-desc">
+      The resource or path you requested does not exist, has been removed, or is temporarily unreachable.
+    </p>
+
+    <!-- Request Details Box -->
+    <div class="details-box">
+      <div class="details-row">
+        <span class="details-label">Status:</span>
+        <span class="details-val">404 Not Found</span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Requested Path:</span>
+        <span class="details-val" id="pathDisplay">/unknown</span>
+      </div>
+      <div class="details-row">
+        <span class="details-label">Resolution:</span>
+        <span class="details-val">Check spelling or redirect</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <a href="/" class="btn btn-primary">Go to Home</a>
+      <button class="btn btn-secondary" onclick="window.history.back()">Go Back</button>
+    </div>
+  </main>
+
+  <script>
+    // Displays the current URL path dynamically in the details box
+    const currentPath = window.location.pathname;
+    if (currentPath && currentPath !== '/') {
+      document.getElementById('pathDisplay').textContent = currentPath;
+    }
+  </script>
+
+</body>
+</html>
