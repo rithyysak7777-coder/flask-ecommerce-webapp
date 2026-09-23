@@ -33,5 +33,20 @@
     "name": "SokRithysak",
     "password": "123",
     "orders": []
+  },
+  "user@gmail.com": {
+    "name": "User",
+    "password": "123",
+    "orders": []
+  },
+  "saksak@gmail.com": {
+    "name": "Saksak",
+    "password": "123",
+    "orders": []
+  },
+  "ractz@gmail.com": {
+    "name": "Ractz",
+    "password": "123",
+    "orders": []
   }
 }

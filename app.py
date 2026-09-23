@@ -1,7 +1,9 @@
+import traceback
 from flask import Flask, render_template
 from config import Config
-from extensions import db, migrate , limiter
+from extensions import db, migrate, limiter
 import helpers
+from helpers import send_telegram_alert
 
 from front import front_bp
 from admin import admin_bp
@@ -27,10 +29,16 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def server_error(e):
+    error_trace = traceback.format_exc()
+    if not error_trace or "NoneType: None" in error_trace:
+        error_trace = f"Exception: {repr(e)}"
+    send_telegram_alert(error_trace, status_code=500)
     return render_template('error/500.html'), 500
 
 @app.errorhandler(429)
 def too_many_requests(e):
+    limit_desc = getattr(e, 'description', 'Too many requests. Rate limit exceeded.')
+    send_telegram_alert(limit_desc, status_code=429)
     return render_template('error/429.html'), 429
 
 
